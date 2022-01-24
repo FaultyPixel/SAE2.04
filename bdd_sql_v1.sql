@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS TYPE_SKI;
 CREATE TABLE IF NOT EXISTS USER(
     id INT AUTO_INCREMENT NOT NULL,
     username VARCHAR(30),
-    password VARCHAR(50),
+    password VARCHAR(2000),
     role VARCHAR(30),
     est_actif BOOLEAN,
     pseudo VARCHAR(30),

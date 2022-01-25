@@ -1,11 +1,12 @@
-DROP TABLE IF EXISTS PANIER;
-DROP TABLE IF EXISTS LIGNE;
-DROP TABLE IF EXISTS COMMANDE;
-DROP TABLE IF EXISTS ETAT;
-DROP TABLE IF EXISTS USER;
+#====DROP TABLE====
+DROP TABLE IF EXISTS Ligne;
 DROP TABLE IF EXISTS Vendu;
+DROP TABLE IF EXISTS COMMANDE;
+DROP TABLE IF EXISTS PANIER;
 DROP TABLE IF EXISTS FOURNISSEUR;
 DROP TABLE IF EXISTS SKI;
+DROP TABLE IF EXISTS ETAT;
+DROP TABLE IF EXISTS USER;
 DROP TABLE IF EXISTS NOYAU;
 DROP TABLE IF EXISTS FIXATION;
 DROP TABLE IF EXISTS FABRICANT;
@@ -17,34 +18,7 @@ DROP TABLE IF EXISTS ANNEE;
 DROP TABLE IF EXISTS SEXE;
 DROP TABLE IF EXISTS TYPE_SKI;
 
--- user (id,username, password, role, est_actif, pseudo, email)
-CREATE TABLE IF NOT EXISTS USER(
-    id INT AUTO_INCREMENT NOT NULL,
-    username VARCHAR(30),
-    password VARCHAR(2000),
-    role VARCHAR(30),
-    est_actif BOOLEAN,
-    pseudo VARCHAR(30),
-    email VARCHAR(50),
-    PRIMARY KEY (id)
-);
--- etat (id, libelle ) 
-CREATE TABLE IF NOT EXISTS ETAT (
-    id INT AUTO_INCREMENT NOT NULL,
-    libelle VARCHAR(20),
-    PRIMARY KEY (id)
-);
--- commande (id, date_achat, #user_id, #etat_id)
-CREATE TABLE IF NOT EXISTS COMMANDE (
-    id INT AUTO_INCREMENT NOT NULL,
-    date_achat DATE,
-    user_id INT,
-    etat_id INT,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_commande_user FOREIGN KEY (user_id) REFERENCES USER(id),
-    CONSTRAINT fk_commande_etat FOREIGN KEY (etat_id) REFERENCES ETAT(id)
-);
-
+#====CREATE TABLE====
 CREATE TABLE TYPE_SKI(
    id_type_ski INT,
    libelle_type_ski VARCHAR(30),
@@ -111,14 +85,30 @@ CREATE TABLE NOYAU(
    PRIMARY KEY(id_noyau)
 );
 
+CREATE TABLE USER(
+   id_user INT,
+   username_user VARCHAR(30),
+   password_user VARCHAR(50),
+   role_user VARCHAR(30),
+   est_actif_user BOOLEAN,
+   pseudo_user VARCHAR(30),
+   email_user VARCHAR(50),
+   PRIMARY KEY(id_user)
+);
+
+CREATE TABLE ETAT(
+   id_etat INT,
+   libelle_etat VARCHAR(20),
+   PRIMARY KEY(id_etat)
+);
+
 CREATE TABLE SKI(
    id_ski INT,
-   modele_ski VARCHAR(30),
-   image_ski VARCHAR(30),
+   modele_ski VARCHAR(150),
+   image_ski VARCHAR(50),
    prix_ski DECIMAL(8,2),
    poids_ski DECIMAL(4,2),
    longueur_ski DECIMAL(5,2),
-   largeur_ski DECIMAL(4,2),
    id_pays_fabrication INT NOT NULL,
    id_niveau_skieur INT,
    id_poids_skieur INT,
@@ -150,6 +140,28 @@ CREATE TABLE FOURNISSEUR(
    FOREIGN KEY(id_ville) REFERENCES VILLE(id_ville)
 );
 
+CREATE TABLE PANIER(
+   id_panier INT,
+   date_ajout_panier DATE,
+   prix_unit_panier DECIMAL(8,2),
+   quantite_panier INT,
+   id_user INT NOT NULL,
+   id_ski INT NOT NULL,
+   PRIMARY KEY(id_panier),
+   FOREIGN KEY(id_user) REFERENCES USER(id_user),
+   FOREIGN KEY(id_ski) REFERENCES SKI(id_ski)
+);
+
+CREATE TABLE COMMANDE(
+   id_commande INT,
+   date_achat_commande DATE,
+   id_etat INT NOT NULL,
+   id_user INT NOT NULL,
+   PRIMARY KEY(id_commande),
+   FOREIGN KEY(id_etat) REFERENCES ETAT(id_etat),
+   FOREIGN KEY(id_user) REFERENCES USER(id_user)
+);
+
 CREATE TABLE Vendu(
    id_ski INT,
    id_fournisseur INT,
@@ -157,25 +169,13 @@ CREATE TABLE Vendu(
    FOREIGN KEY(id_ski) REFERENCES SKI(id_ski),
    FOREIGN KEY(id_fournisseur) REFERENCES FOURNISSEUR(id_fournisseur)
 );
--- ligne_commande ( #commande_id , #ski_id , prix_unit, quantite)
-CREATE TABLE  IF NOT EXISTS LIGNE (
-    commande_id INT,
-    ski_id INT,
-    prix_unit DECIMAL(8, 2),
-    quantite INT,
-    PRIMARY KEY (commande_id, ski_id),
-    CONSTRAINT fk_ligne_commande FOREIGN KEY (commande_id) REFERENCES COMMANDE(id),
-    CONSTRAINT fk_ligne_article FOREIGN KEY (ski_id) REFERENCES SKI(id_ski)
-);
--- panier (id, date_ajout,  #user_id , #ski_id, prix_unit, quantite)
-CREATE TABLE IF NOT EXISTS PANIER (
-    id INT AUTO_INCREMENT NOT NULL,
-    date_ajout DATE,
-    user_id INT,
-    ski_id INT,
-    prix_unit DECIMAL(8, 2),
-    quantite INT,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_panier_user FOREIGN KEY (user_id) REFERENCES USER(id),
-    CONSTRAINT fk_panier_ski FOREIGN KEY (ski_id) REFERENCES SKI(id_ski)
+
+CREATE TABLE Ligne(
+   id_ski INT,
+   id_commande INT,
+   prix_unit DECIMAL(8,2),
+   quantite INT,
+   PRIMARY KEY(id_ski, id_commande),
+   FOREIGN KEY(id_ski) REFERENCES SKI(id_ski),
+   FOREIGN KEY(id_commande) REFERENCES COMMANDE(id_commande)
 );

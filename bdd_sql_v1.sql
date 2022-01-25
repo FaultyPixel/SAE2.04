@@ -1,6 +1,8 @@
 #====DROP TABLE====
+DROP TABLE IF EXISTS Est_contenu;
 DROP TABLE IF EXISTS Ligne;
-DROP TABLE IF EXISTS Vendu;
+DROP TABLE IF EXISTS Fourni;
+DROP TABLE IF EXISTS LIVRAISON_STOCK;
 DROP TABLE IF EXISTS COMMANDE;
 DROP TABLE IF EXISTS PANIER;
 DROP TABLE IF EXISTS FOURNISSEUR;
@@ -14,7 +16,6 @@ DROP TABLE IF EXISTS VILLE;
 DROP TABLE IF EXISTS PAYS_FABRICATION;
 DROP TABLE IF EXISTS POIDS_SKIEUR;
 DROP TABLE IF EXISTS NIVEAU_SKIEUR;
-DROP TABLE IF EXISTS ANNEE;
 DROP TABLE IF EXISTS SEXE;
 DROP TABLE IF EXISTS TYPE_SKI;
 
@@ -29,12 +30,6 @@ CREATE TABLE SEXE(
    id_sexe INT,
    libelle_sexe VARCHAR(30),
    PRIMARY KEY(id_sexe)
-);
-
-CREATE TABLE ANNEE(
-   id_annee INT,
-   libelle_annee DATE,
-   PRIMARY KEY(id_annee)
 );
 
 CREATE TABLE NIVEAU_SKIEUR(
@@ -93,6 +88,7 @@ CREATE TABLE USER(
    est_actif_user BOOLEAN,
    pseudo_user VARCHAR(30),
    email_user VARCHAR(50),
+   adresse_user VARCHAR(100),
    PRIMARY KEY(id_user)
 );
 
@@ -109,12 +105,13 @@ CREATE TABLE SKI(
    prix_ski DECIMAL(8,2),
    poids_ski DECIMAL(4,2),
    longueur_ski DECIMAL(5,2),
+   stock_ski INT,
+   AAAA DATE,
    id_pays_fabrication INT NOT NULL,
    id_niveau_skieur INT,
    id_poids_skieur INT,
    id_noyau INT NOT NULL,
    id_fixation INT,
-   id_annee INT NOT NULL,
    id_sexe INT NOT NULL,
    id_fabricant INT NOT NULL,
    id_type_ski INT NOT NULL,
@@ -124,7 +121,6 @@ CREATE TABLE SKI(
    FOREIGN KEY(id_poids_skieur) REFERENCES POIDS_SKIEUR(id_poids_skieur),
    FOREIGN KEY(id_noyau) REFERENCES NOYAU(id_noyau),
    FOREIGN KEY(id_fixation) REFERENCES FIXATION(id_fixation),
-   FOREIGN KEY(id_annee) REFERENCES ANNEE(id_annee),
    FOREIGN KEY(id_sexe) REFERENCES SEXE(id_sexe),
    FOREIGN KEY(id_fabricant) REFERENCES FABRICANT(id_fabricant),
    FOREIGN KEY(id_type_ski) REFERENCES TYPE_SKI(id_type_ski)
@@ -135,6 +131,7 @@ CREATE TABLE FOURNISSEUR(
    libelle_fournisseur VARCHAR(30),
    telephone_fournisseur VARCHAR(10),
    mail_fournisseur VARCHAR(30),
+   adresse_fournisseur VARCHAR(100),
    id_ville INT NOT NULL,
    PRIMARY KEY(id_fournisseur),
    FOREIGN KEY(id_ville) REFERENCES VILLE(id_ville)
@@ -162,7 +159,17 @@ CREATE TABLE COMMANDE(
    FOREIGN KEY(id_user) REFERENCES USER(id_user)
 );
 
-CREATE TABLE Vendu(
+CREATE TABLE LIVRAISON_STOCK(
+   id_livraison_stock INT,
+   date_livraison_stock DATE,
+   id_etat INT NOT NULL,
+   id_fournisseur INT NOT NULL,
+   PRIMARY KEY(id_livraison_stock),
+   FOREIGN KEY(id_etat) REFERENCES ETAT(id_etat),
+   FOREIGN KEY(id_fournisseur) REFERENCES FOURNISSEUR(id_fournisseur)
+);
+
+CREATE TABLE Fourni(
    id_ski INT,
    id_fournisseur INT,
    PRIMARY KEY(id_ski, id_fournisseur),
@@ -173,9 +180,20 @@ CREATE TABLE Vendu(
 CREATE TABLE Ligne(
    id_ski INT,
    id_commande INT,
-   prix_unit DECIMAL(8,2),
-   quantite INT,
+   prix_unit_ligne DECIMAL(8,2),
+   quantite_ligne INT,
    PRIMARY KEY(id_ski, id_commande),
    FOREIGN KEY(id_ski) REFERENCES SKI(id_ski),
    FOREIGN KEY(id_commande) REFERENCES COMMANDE(id_commande)
 );
+
+CREATE TABLE Est_contenu(
+   id_ski INT,
+   id_livraison_stock INT,
+   prix_unit_est_contenu DECIMAL(8,2),
+   quantite_est_contenu INT,
+   PRIMARY KEY(id_ski, id_livraison_stock),
+   FOREIGN KEY(id_ski) REFERENCES SKI(id_ski),
+   FOREIGN KEY(id_livraison_stock) REFERENCES LIVRAISON_STOCK(id_livraison_stock)
+);
+

@@ -7,7 +7,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from connexion_db import get_db
 
-auth_security = Blueprint('auth_security', __name__,template_folder='templates')
+auth_security = Blueprint('auth_security', __name__,
+                        template_folder='templates')
 
 
 @auth_security.route('/login')
@@ -21,7 +22,7 @@ def auth_login_post():
     username = request.form.get('username')
     password = request.form.get('password')
     tuple_select = (username)
-    sql = 'SELECT * FROM USER WHERE username = %s'
+    sql = '''requete1'''
     retour = mycursor.execute(sql, (username))
     user = mycursor.fetchone()
     if user:
@@ -54,7 +55,7 @@ def auth_signup_post():
     username = request.form.get('username')
     password = request.form.get('password')
     tuple_select = (username, email)
-    sql = 'SELECT * FROM USER WHERE username=%s and email =%s'
+    sql = '''requete2'''
     retour = mycursor.execute(sql, tuple_select)
     user = mycursor.fetchone()
     if user:
@@ -63,11 +64,11 @@ def auth_signup_post():
 
     # ajouter un nouveau user
     password = generate_password_hash(password, method='sha256')
-    tuple_insert = (username, password, 'ROLE_client', email)
-    sql = 'INSERT INTO USER (username, password, role, email) VALUES (%s,%s,%s,%s)'
+    tuple_insert = (username, email, password, 'ROLE_client')
+    sql = '''requete3'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()                    # position de cette ligne discutatble !
-    sql='''SELECT last_insert_id() AS last_insert_id'''
+    sql='''requete4'''
     mycursor.execute(sql)
     info_last_id = mycursor.fetchone()
     user_id = info_last_id['last_insert_id']

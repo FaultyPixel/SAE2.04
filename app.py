@@ -6,17 +6,21 @@ from flask import Blueprint
 
 
 from controllers.auth_security import *
+
 from controllers.client_article import *
 from controllers.client_panier import *
 from controllers.client_commande import *
 from controllers.client_commentaire import *
+
 from controllers.admin_article import *
 from controllers.admin_commande import *
 from controllers.admin_panier import *
-
+from controllers.admin_type_article import *
+from controllers.admin_dataviz_article import *
 
 app = Flask(__name__)
 app.secret_key = 'une cle(token) : grain de sel(any random string)'
+
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -60,6 +64,8 @@ app.register_blueprint(client_panier)
 app.register_blueprint(admin_article)
 app.register_blueprint(admin_commande)
 app.register_blueprint(admin_panier)
+app.register_blueprint(admin_type_article)
+app.register_blueprint(admin_dataviz_article)
 
 
 if __name__ == '__main__':

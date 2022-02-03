@@ -7,7 +7,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from connexion_db import get_db
 
-auth_security = Blueprint('auth_security', __name__,template_folder='templates')
+auth_security = Blueprint('auth_security', __name__,
+                        template_folder='templates')
 
 
 @auth_security.route('/login')
@@ -21,20 +22,20 @@ def auth_login_post():
     username = request.form.get('username')
     password = request.form.get('password')
     tuple_select = (username)
-    sql = 'SELECT * FROM USER WHERE username = %s'
+    sql = '''SELECT * FROM user WHERE username_user = %s'''
     retour = mycursor.execute(sql, (username))
     user = mycursor.fetchone()
     if user:
-        mdp_ok = check_password_hash(user['password'], password)
+        mdp_ok = check_password_hash(user['password_user'], password)
         if not mdp_ok:
             flash(u'Vérifier votre mot de passe et essayer encore.')
             return redirect('/login')
         else:
-            session['username'] = user['username']
-            session['role'] = user['role']
-            session['user_id'] = user['id']
-            print(user['username'], user['role'])
-            if user['role'] == 'ROLE_admin':
+            session['username'] = user['username_user']
+            session['role'] = user['role_user']
+            session['user_id'] = user['id_user']
+            print(user['username_user'], user['role_user'])
+            if user['role_user'] == 'ROLE_admin':
                 return redirect('/admin/commande/index')
             else:
                 return redirect('/client/article/show')
@@ -53,8 +54,9 @@ def auth_signup_post():
     email = request.form.get('email')
     username = request.form.get('username')
     password = request.form.get('password')
+    adresse = request.form.get('adresse')
     tuple_select = (username, email)
-    sql = 'SELECT * FROM USER WHERE username=%s and email =%s'
+    sql = '''SELECT * FROM USER WHERE username_user = %s or email_user = %s'''
     retour = mycursor.execute(sql, tuple_select)
     user = mycursor.fetchone()
     if user:
@@ -63,11 +65,12 @@ def auth_signup_post():
 
     # ajouter un nouveau user
     password = generate_password_hash(password, method='sha256')
-    tuple_insert = (username, password, 'ROLE_client', email)
-    sql = 'INSERT INTO USER (username, password, role, email) VALUES (%s,%s,%s,%s)'
+    role = 'ROLE_client'
+    tuple_insert = (username, email, password, role, adresse)
+    sql = '''INSERT INTO user(username_user,email_user,password_user,role_user, adresse_user) VALUES (%s,%s,%s,%s,%s);'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()                    # position de cette ligne discutatble !
-    sql='''SELECT last_insert.id() AS last_insert_id'''
+    sql='''SELECT last_insert_id() AS last_insert_id;'''
     mycursor.execute(sql)
     info_last_id = mycursor.fetchone()
     user_id = info_last_id['last_insert_id']
@@ -77,7 +80,7 @@ def auth_signup_post():
     session.pop('role', None)
     session.pop('user_id', None)
     session['username'] = username
-    session['role'] = 'ROLE_client'
+    session['role'] = role
     session['user_id'] = user_id
     return redirect('/client/article/show')
     #return redirect(url_for('client_index'))

@@ -2,16 +2,15 @@ from flask import Flask, request, render_template, redirect, url_for, abort, fla
 
 import pymysql.cursors
 
-
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = pymysql.connect(
             host="localhost",
             # host="serveurmysql",
-            user="achevalm",
-            password="0401",
-            database="BDD_flask",
+            user="anonymous",
+            # password="votreMotDePasse",
+            database="tdbdds2",
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor
         )

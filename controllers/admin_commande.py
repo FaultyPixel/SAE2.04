@@ -10,6 +10,7 @@ admin_commande = Blueprint('admin_commande', __name__,
 
 @admin_commande.route('/admin/commande/index')
 def admin_index():
+    print("J'y vais")
     return render_template('admin/layout_admin.html')
 
 

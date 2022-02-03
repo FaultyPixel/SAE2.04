@@ -70,13 +70,13 @@ CREATE TABLE FABRICANT(
 
 CREATE TABLE FIXATION(
    id_fixation INT AUTO_INCREMENT NOT NULL,
-   libelle_fixation DATE,
+   libelle_fixation VARCHAR(30),
    PRIMARY KEY(id_fixation)
 );
 
 CREATE TABLE NOYAU(
    id_noyau INT AUTO_INCREMENT NOT NULL,
-   libelle_noyau DATE,
+   libelle_noyau VARCHAR(30),
    PRIMARY KEY(id_noyau)
 );
 

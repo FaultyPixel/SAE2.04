@@ -85,7 +85,7 @@ CREATE TABLE USER(
    username_user VARCHAR(30),
    password_user VARCHAR(50),
    role_user VARCHAR(30),
-   est_actif_user LOGICAL,
+   est_actif_user BOOLEAN,
    email_user VARCHAR(50),
    adresse_user VARCHAR(100),
    PRIMARY KEY(id_user)

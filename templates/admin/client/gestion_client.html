@@ -31,14 +31,15 @@
                         <td>{{ elt.email_user }}</td>
                         <td>{{ elt.adresse_user }}</td>
                         <td class="EANDD">
-                            <a class="delete" href="/admin/client/gestion/delete?id={{ elt.id_user }}">Cliquez pour supprimer</a>
+                            <a class="edit" href="/admin/client/gestion/edit/{{ elt.id_user }}">Editer</a>
+                            <a class="delete" href="/admin/client/gestion/delete?id={{ elt.id_user }}">Supprimer</a>
                         </td>
                     </tr>
                 {% endfor %}
             {% else %}
                 <tr>
                     <td>
-                        pas de monument
+                        pas d'utilisateur
                     </td>
                 </tr>
             {% endif %}

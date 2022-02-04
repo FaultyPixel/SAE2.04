@@ -1,0 +1,19 @@
+{% extends "admin/layout_admin.html" %}
+{% block body %}
+    <h1 class="red">Suppression du client : {{ commande[0].username_user }} impossible</h1>
+    <h2>Veuillez d'abord supprimer les commandes ci-dessous :</h2>
+    <br><br>
+    <ul>
+        {% if commande | length >= 1 %}
+            {% for elt in commande %}
+                <ol>
+                    <h4 class="sup"><a class="delete"
+                    href="/admin/client/gestion/delete/commande?id={{ elt.id_commande }}?id_user={{ elt.id_user }}"
+                    onclick="return confirm('Are you sure?')">Supprimer</a> --> id_commande : {{ elt.id_commande }} |
+                        date de la commande : {{ date_achat_commande }} | etat de la commande : {{ elt.libelle_etat }}
+                    </h4>
+                </ol><br>
+            {% endfor %}
+        {% endif %}
+    </ul>
+{% endblock %}

@@ -10,15 +10,20 @@ admin_commande = Blueprint('admin_commande', __name__,
 
 @admin_commande.route('/admin/commande/index')
 def admin_index():
+    print("J'y vais")
     return render_template('admin/layout_admin.html')
 
 
 @admin_commande.route('/admin/commande/show', methods=['get','post'])
 def admin_commande_show():
     mycursor = get_db().cursor()
-    commandes = []
-    articles_commande = None
-    return render_template('admin/commandes/show.html', commandes=commandes, articles_commande=articles_commande)
+    commande = '''SELECT * FROM COMMANDE
+                INNER JOIN etat e on commande.id_etat = e.id_etat
+                INNER JOIN user u on commande.id_user = u.id_user'''
+    mycursor.execute(commande)
+    commande = mycursor.fetchall()
+    print(commande)
+    return render_template('admin/commandes/show.html', commande=commande)
 
 
 @admin_commande.route('/admin/commande/valider', methods=['get','post'])

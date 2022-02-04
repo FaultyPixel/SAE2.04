@@ -120,14 +120,14 @@
                                 <br>
                             {% if article.nb_notes is defined %}
                             {% if article.nb_notes > 1 %}
-                                 <a  href="/client/article/details/{{ article.id }}">
+                                 <a  href="/client/article/details/{{ article.id_ski }}">
                                     <span style="color: #3A7734"> note : {{  "{:,.1f}".format(article.moy_notes) }}</span>
                                  </a>
                             {% endif %}
                             {% endif %}
                             {% if article.nb_avis is defined %}
                             {% if article.nb_avis > 0 %}
-                                 <a href="/client/article/details/{{ article.id }}">
+                                 <a href="/client/article/details/{{ article.id_ski }}">
                                     <span style="color: #3A7734">({{ article.nb_avis }} avis)</span>
                                  </a>
                             {% endif %}

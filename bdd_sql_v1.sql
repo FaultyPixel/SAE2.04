@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS SKI(
    longueur_ski INT,
    stock_ski INT,
    note_ski DECIMAL(2,1),
+   nb_note INT,
    AAAA INT,
    id_pays_fabrication INT NOT NULL,
    id_niveau_skieur INT,

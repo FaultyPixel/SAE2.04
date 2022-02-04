@@ -1,0 +1,41 @@
+{% extends "admin/layout_admin.html" %}
+{% block body %}
+<form method="post" action="/admin/client/gestion/add">
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <br>
+            <div class="alert alert-warning">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Ajouter un utilisateur</h1>
+
+    <label>Pseudo</label>
+    <input type="text" name="username" class="form-control" value="" required autofocus  placeholder="Username (login)">
+
+    <label for="_email">Email</label>
+    <input type="text" name="email" class="form-control" value="" required  placeholder="Email"  >
+
+    <label for="_password">Mot de passe</label>
+    <input type="password" name="password" class="form-control" value="" required  placeholder="Password">
+
+    <label for="_adresse">Adresse</label>
+    <input type="text" name="adresse" id="adresse" class="form-control" value="" required  placeholder="Adresse"  >
+
+    <label for="_role_user">Role</label>
+    <select class="form-control form-control-lg" name="role_user" id="role_user" required>
+        <option value="">Sélectionner un role</option>
+            <option value="ROLE_client"> Client </option>
+            <option value="ROLE_admin"> Admin </option>
+    </select><br>
+
+
+    <button class="btn btn-lg btn-primary mt-4" type="submit">
+        Valider l'utilisateur
+    </button>
+</form>
+
+{% endblock %}

@@ -44,22 +44,26 @@ def delete_client():
 @admin_client.route('/admin/client/gestion/delete/commande', methods=['GET'])
 def delete_client_user():
     mycursor = get_db().cursor()
-    id_commande = request.args.get('id')
-    id_client = request.args.get('id_user')
+    id_commande = request.args.get('id')[0]
+    id_client = request.args.get('id')[1]
     tuple_insert = id_commande
     sql = '''DELETE FROM COMMANDE WHERE COMMANDE.id_commande = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
     tuple_insert = id_client
-    sql = sql = '''SELECT * FROM COMMANDE 
+    sql = '''SELECT * FROM COMMANDE 
             INNER JOIN user u on commande.id_user = u.id_user
             INNER JOIN etat e on commande.id_etat = e.id_etat
             WHERE COMMANDE.id_user = %s;'''
     mycursor.execute(sql, tuple_insert)
     commande = mycursor.fetchall()
-    print(commande[0])
-    if commande:
+    if commande != ():
         return render_template('admin/client/delete_client.html', commande=commande)
+    else:
+        sql = '''DELETE FROM USER WHERE USER.id_user = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        get_db().commit()
+        return redirect('/admin/client/gestion')
 
 
 @admin_client.route('/admin/client/gestion/add', methods=['GET'])

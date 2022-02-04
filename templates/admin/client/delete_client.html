@@ -8,7 +8,7 @@
             {% for elt in commande %}
                 <ol>
                     <h4 class="sup"><a class="delete"
-                    href="/admin/client/gestion/delete/commande?id={{ elt.id_commande }}?id_user={{ elt.id_user }}"
+                    href="/admin/client/gestion/delete/commande?id={{ elt.id_commande }}{{ elt.id_user }}"
                     onclick="return confirm('Are you sure?')">Supprimer</a> --> id_commande : {{ elt.id_commande }} |
                         date de la commande : {{ date_achat_commande }} | etat de la commande : {{ elt.libelle_etat }}
                     </h4>

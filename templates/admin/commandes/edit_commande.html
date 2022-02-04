@@ -1,0 +1,30 @@
+{% extends "admin/layout_admin.html" %}
+{% block body %}
+    <h1>Modifier une commande</h1>
+    {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+    {% endif %}
+    <form method="post" action="{{ url_for('admin_commande.valid_edit_commande') }}">
+        <div class="form-group">
+            <input type="hidden" name="id_commande" size="18" value="{{ commande.id_commande }}" id="id_commande">
+
+            <label for="id_etat">Etat de la commande :</label><br>
+            <select class="form-control form-control-lg" name="id_etat" id="id_etat" required>
+                <option value="{{ commande.id_etat }}">
+                    {% for elt in etat %}
+                    {% if commande['id_etat'] == etat['id_etat'] %}
+                    {{ etat.libelle_etat }}
+                    {% endif %}
+                    {% endfor %}
+                </option>
+                    {% for elt in etat %}
+                    {% if commande['id_etat'] != etat['id_etat'] %}
+                        <option value="{{ etat['id_etat'] }}">{{ etat['libelle_etat'] }}</option>
+                    {% endif %}
+                    {% endfor %}
+            </select><br>
+
+            <input class="edit" type="submit" value="Modifier" name="Modifier">
+        </div>
+    </form>
+{% endblock %}

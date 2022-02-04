@@ -22,12 +22,42 @@ def admin_commande_show():
                 INNER JOIN user u on commande.id_user = u.id_user'''
     mycursor.execute(commande)
     commande = mycursor.fetchall()
-    print(commande)
     return render_template('admin/commandes/show.html', commande=commande)
 
-
-@admin_commande.route('/admin/commande/valider', methods=['get','post'])
-def admin_commande_valider():
+@admin_commande.route('/admin/commande/edit/<int:id>', methods=['GET'])
+def edit_commande(id):
     mycursor = get_db().cursor()
+    tuple_insert = id
+    query = '''SELECT * FROM commande
+            INNER JOIN etat e on commande.id_etat = e.id_etat
+            INNER JOIN user u on commande.id_user = u.id_user
+            WHERE id_commande = %s;'''
+    mycursor.execute(query, tuple_insert)
+    commande = mycursor.fetchone()
+    query = '''SELECT * FROM etat;'''
+    mycursor.execute(query)
+    etat = mycursor.fetchall()
+    print(commande)
+    print(etat)
+    return render_template('admin/commandes/edit_commande.html', commande=commande, etat=etat)
 
-    return redirect('/admin/commande/show') 
+
+@admin_commande.route('/admin/commande/edit', methods=['POST'])
+def valid_edit_commande():
+    mycursor = get_db().cursor()
+    id_commande = request.form.get('id_commande')
+    print("Je modifie la commande : " + id_commande)
+    id_etat = request.form.get('id_etat')
+    tuple_insert = (id_etat, id_commande)
+    query = '''UPDATE commande SET commande.id_etat =%s
+                WHERE id_commande = %s ;'''
+    mycursor.execute(query, tuple_insert)
+    get_db().commit()
+    return redirect('/admin/commande/show')
+
+
+#@admin_commande.route('/admin/commande/valider', methods=['get','post'])
+#def admin_commande_valider():
+#    mycursor = get_db().cursor()
+#
+#    return redirect('/admin/commande/show')

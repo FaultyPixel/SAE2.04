@@ -12,6 +12,7 @@
                 <th>Email</th>
                 <th>Adresse</th>
                 <th>Etat de la commande</th>
+                <th>Opérations</th>
             </tr>
             </thead>
             <tbody>
@@ -30,6 +31,9 @@
                         {% else %}
                         <td>{{ elt.libelle_etat }}</td>
                         {% endif %}
+                        <td>
+                            <a href="/admin/commande/edit/{{ elt.id_commande }}">Editer</a>
+                        </td>
                     </tr>
                 {% endfor %}
             {% else %}

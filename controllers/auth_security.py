@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from connexion_db import get_db
 
 auth_security = Blueprint('auth_security', __name__,
-                        template_folder='templates')
+                          template_folder='templates')
 
 
 @auth_security.route('/login')
@@ -21,7 +21,6 @@ def auth_login_post():
     mycursor = get_db().cursor()
     username = request.form.get('username')
     password = request.form.get('password')
-    tuple_select = (username)
     sql = '''SELECT * FROM user WHERE username_user = %s'''
     retour = mycursor.execute(sql, (username))
     user = mycursor.fetchone()
@@ -42,6 +41,7 @@ def auth_login_post():
     else:
         flash(u'Vérifier votre login et essayer encore.')
         return redirect('/login')
+
 
 @auth_security.route('/signup')
 def auth_signup():
@@ -69,8 +69,8 @@ def auth_signup_post():
     tuple_insert = (username, email, password, role, adresse)
     sql = '''INSERT INTO user(username_user,email_user,password_user,role_user, adresse_user) VALUES (%s,%s,%s,%s,%s);'''
     mycursor.execute(sql, tuple_insert)
-    get_db().commit()                    # position de cette ligne discutatble !
-    sql='''SELECT last_insert_id() AS last_insert_id;'''
+    get_db().commit()  # position de cette ligne discutatble !
+    sql = '''SELECT last_insert_id() AS last_insert_id;'''
     mycursor.execute(sql)
     info_last_id = mycursor.fetchone()
     user_id = info_last_id['last_insert_id']
@@ -83,7 +83,7 @@ def auth_signup_post():
     session['role'] = role
     session['user_id'] = user_id
     return redirect('/client/article/show')
-    #return redirect(url_for('client_index'))
+    # return redirect(url_for('client_index'))
 
 
 @auth_security.route('/logout')
@@ -92,9 +92,9 @@ def auth_logout():
     session.pop('role', None)
     session.pop('user_id', None)
     return redirect('/')
-    #return redirect(url_for('main_index'))
+    # return redirect(url_for('main_index'))
+
 
 @auth_security.route('/forget-password', methods=['GET'])
 def forget_password():
     return render_template('auth/forget_password.html')
-

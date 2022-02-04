@@ -22,10 +22,10 @@
                     {% else %}
                     {% for itemPanier in articlesPanier %}
                         <tr>
-                            <td>{{itemPanier.nom}}</td>
-                            <td>{{itemPanier.quantite}}</td>
-                            {% if itemPanier.prix is defined %}
-                                <td>{{itemPanier.prix}}</td>
+                            <td>{{itemPanier.modele_ski}}</td>
+                            <td>{{itemPanier.quantite_panier}}</td>
+                            {% if itemPanier.prix_ski is defined %}
+                                <td>{{itemPanier.prix_ski}}</td>
                                 <td>{{ "{:,.2f} €".format((itemPanier.prix * itemPanier.quantite)) }}</td>
                             {% else %} 
                                 <td>prix ND</td><td>prix*qte ND</td>
@@ -81,15 +81,15 @@
                 {% for article in articles  %}
                         <div class="card col-4 mt-4">
                             <div class="card-body border-dark rounded">
-                                <a href="/client/article/details/{{ article.id }}">
+                                <a href="/client/article/details/{{ article.id_ski }}">
                                 <h2 class="card-title">
-                                    <span style="color: #0b2e13">{{ article.nom }}</span><br>
-                                    {{ article.prix }}
+                                    <span style="color: #0b2e13">{{ article.modele_ski }}</span><br>
+                                    {{ article.prix_ski }}
                                     €
                                 </h2>
                                 <div class="card-body">
-                                     {%  if article.image is not none %}
-                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/' + article['image']) }}"  alt="image  de {{ article.nom }}" >
+                                     {%  if article.image_ski is not none %}
+                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/' + article['image_ski']) }}"  alt="image  de {{ article.modele_ski }}" >
                                     {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.nom }}" >
                                     {% endif %}
                                     <hr>
@@ -97,22 +97,22 @@
                                 </a>
                                 <div class="card-body">
                                         <form  action="/client/panier/add" method="post">
-                                            <input type="hidden" name="idArticle" value="{{ article.id }}">
+                                            <input type="hidden" name="idArticle" value="{{ article.id_ski }}">
                                             <button class="btn btn-success float-right">
                                                 <i class="fas fa-shopping-cart"></i>
                                                 Ajouter
                                              </button>
 
                                             <div class="input-group input-group-sm" style="width: 4rem !important;">
-                                                <input type="number" id="input-{{ article.id }}" step="1" min="0" max="{{ article.stock }}" class="form-control" style="width: 4rem !important;" value="1" name="quantite">
+                                                <input type="number" id="input-{{ article.id_ski }}" step="1" min="0" max="{{ article.stock_ski }}" class="form-control" style="width: 4rem !important;" value="1" name="quantite">
                                             </div>
                                         </form>
                                 </div>
                             </div>
                             <div class="card-footer">
-                            {% if article.stock is defined %}
-                                 {% if article.stock > 0 %}
-                                    <small class="text-muted">Stock restant : {{ article.stock }}</small>
+                            {% if article.stock_ski is defined %}
+                                 {% if article.stock_ski > 0 %}
+                                    <small class="text-muted">Stock restant : {{ article.stock_ski }}</small>
                                  {% else %}
                                     <small class="text-muted">article  momentanément indisponible</small>
                                  {% endif %}

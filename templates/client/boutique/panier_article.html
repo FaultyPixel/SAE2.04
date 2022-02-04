@@ -22,10 +22,10 @@
                     {% else %}
                     {% for itemPanier in articlesPanier %}
                         <tr>
-                            <td>{{itemPanier.nom}}</td>
-                            <td>{{itemPanier.quantite}}</td>
-                            {% if itemPanier.prix is defined %}
-                                <td>{{itemPanier.prix}}</td>
+                            <td>{{itemPanier.modele_ski}}</td>
+                            <td>{{itemPanier.quantite_panier}}</td>
+                            {% if itemPanier.prix_ski is defined %}
+                                <td>{{itemPanier.prix_ski}}</td>
                                 <td>{{ "{:,.2f} €".format((itemPanier.prix * itemPanier.quantite)) }}</td>
                             {% else %} 
                                 <td>prix ND</td><td>prix*qte ND</td>
@@ -88,8 +88,8 @@
                                     €
                                 </h2>
                                 <div class="card-body">
-                                     {%  if article.image is not none %}
-                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/' + article['image']) }}"  alt="image  de {{ article.nom }}" >
+                                     {%  if article.image_ski is not none %}
+                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/' + article['image_ski']) }}"  alt="image  de {{ article.modele_ski }}" >
                                     {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.nom }}" >
                                     {% endif %}
                                     <hr>

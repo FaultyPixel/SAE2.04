@@ -219,3 +219,5 @@ LOAD DATA LOCAL INFILE './JeuTest/etat.csv' INTO TABLE ETAT CHARACTER SET 'utf8'
 
 INSERT INTO commande (id_commande, date_achat_commande, id_etat, id_user) VALUES
 (NULL, '2022-02-02', 1, 2);
+INSERT INTO commande (id_commande, date_achat_commande, id_etat, id_user) VALUES
+(NULL, '2022-02-03', 1, 2);

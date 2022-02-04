@@ -41,6 +41,19 @@ def delete_client():
     print("Je delete le client id : "+id_client)
     return redirect("/admin/client/gestion")
 
+@admin_client.route('/admin/client/gestion/delete/all', methods=['GET'])
+def delete_all():
+    mycursor = get_db().cursor()
+    id_client = request.args.get('id')
+    tuple_insert = id_client
+    sql = '''DELETE FROM COMMANDE WHERE COMMANDE.id_user = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
+    sql = '''DELETE FROM USER WHERE USER.id_user = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
+    return redirect('/admin/client/gestion')
+
 @admin_client.route('/admin/client/gestion/delete/commande', methods=['GET'])
 def delete_client_user():
     mycursor = get_db().cursor()

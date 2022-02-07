@@ -1,0 +1,42 @@
+{% extends "admin/layout_admin.html" %}
+{% block body %}
+    <h1>Modifier un utilisateur</h1>
+    {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+    {% endif %}
+    <form method="post" action="{{ url_for('admin_client.valid_edit_client') }}">
+        <div class="form-group">
+            <input type="hidden" name="id_user" size="18" value="{{ user.id_user }}" id="id_user">
+
+            <label for="username_user">Pseudo utilisateur :</label><br>
+            <input class="form-control form-control-lg" type="text" name="username_user"
+                   value="{{ user.username_user }}" size="18" id="username_user" required><br>
+
+            <label for="role_user">Role :</label><br>
+            <select class="form-control form-control-lg" name="role_user" id="role_user" required>
+                <option value="{{ user.role_user }}">
+                    {% if user.role_user == 'ROLE_client' %}
+                    Client
+                    {% else %}
+                    Admin
+                    {% endif %}
+                </option>
+                    {% if user.role_user == 'ROLE_client' %}
+                    <option value="ROLE_admin">Admin</option>
+                    {% else %}
+                    <option value="ROLE_client">Client</option>
+                    {% endif %}
+            </select><br>
+
+            <label for="email_user">Email :</label><br>
+            <input class="form-control form-control-lg" type="text" name="email_user"
+                   value="{{ user.email_user }}" size="18" id="email_user" required><br>
+
+            <label for="adresse_user">Adresse :</label><br>
+            <input class="form-control form-control-lg" type="text" name="adresse_user"
+                   value="{{ user.adresse_user }}" size="18" id="adresse_user" required><br>
+
+            <input class="edit" type="submit" value="Modifier" name="Modifier">
+        </div>
+    </form>
+{% endblock %}

@@ -12,14 +12,14 @@
             <select class="form-control form-control-lg" name="id_etat" id="id_etat" required>
                 <option value="{{ commande.id_etat }}">
                     {% for elt in etat %}
-                    {% if commande['id_etat'] == etat['id_etat'] %}
-                    {{ etat.libelle_etat }}
+                    {% if  commande.id_etat == elt.id_etat %}
+                    {{ elt.libelle_etat }}
                     {% endif %}
                     {% endfor %}
                 </option>
                     {% for elt in etat %}
-                    {% if commande['id_etat'] != etat['id_etat'] %}
-                        <option value="{{ etat['id_etat'] }}">{{ etat['libelle_etat'] }}</option>
+                    {% if commande.id_etat != elt.id_etat %}
+                        <option value="{{ elt.id_etat }}">{{ elt.libelle_etat }}</option>
                     {% endif %}
                     {% endfor %}
             </select><br>

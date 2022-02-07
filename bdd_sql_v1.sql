@@ -221,3 +221,9 @@ INSERT INTO commande (id_commande, date_achat_commande, id_etat, id_user) VALUES
 (NULL, '2022-02-02', 1, 2);
 INSERT INTO commande (id_commande, date_achat_commande, id_etat, id_user) VALUES
 (NULL, '2022-02-03', 1, 2);
+INSERT INTO ligne (id_ski, id_commande, prix_unit_ligne, quantite_ligne) VALUES
+(1, 1, 183.99, 3);
+INSERT INTO ligne (id_ski, id_commande, prix_unit_ligne, quantite_ligne) VALUES
+(3, 1, 599.99, 1);
+INSERT INTO ligne (id_ski, id_commande, prix_unit_ligne, quantite_ligne) VALUES
+(2, 2, 399.99, 2);

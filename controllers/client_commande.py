@@ -21,7 +21,12 @@ def client_commande_add():
 @client_commande.route('/client/commande/show', methods=['get','post'])
 def client_commande_show():
     mycursor = get_db().cursor()
-    commandes = None
+
+    sql = "SELECT * FROM COMMANDE WHERE id_user = %s;"
+    mycursor.execute(sql, session['user_id'])
+    commandes = mycursor.fetchall()
+
+
     articles_commande = None
     return render_template('client/commandes/show.html', commandes=commandes, articles_commande=articles_commande)
 

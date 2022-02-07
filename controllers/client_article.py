@@ -25,12 +25,16 @@ def client_article_show():  # remplace client_index
     mycursor.execute(query);
     articles = mycursor.fetchall();
     print(articles)
+
     sql = """SELECT * FROM type_ski"""
     mycursor.execute(query)
     types_articles = mycursor.fetchall()
-    query = f"""SELECT * FROM PANIER WHERE id_user={session['user_id']}"""
-    mycursor.execute(query)
+    user_id = session['user_id']
+    query = f"""SELECT * FROM PANIER JOIN SKI ON PANIER.id_ski = SKI.id_ski WHERE id_user=%s"""
+    tpl = (user_id)
+    mycursor.execute(query, tpl)
     articles_panier = mycursor.fetchall()
+
     prix_total = None
     return render_template('client/boutique/panier_article.html', articles=articles, articlesPanier=articles_panier,
                            prix_total=prix_total, itemsFiltre=types_articles)

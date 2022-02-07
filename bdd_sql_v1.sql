@@ -139,7 +139,6 @@ CREATE TABLE IF NOT EXISTS SKI(
 
 CREATE TABLE IF NOT EXISTS PANIER(
    id_panier INT AUTO_INCREMENT NOT NULL,
-   date_ajout_panier DATE,
    quantite_panier INT,
    id_user INT NOT NULL,
    id_ski INT NOT NULL,

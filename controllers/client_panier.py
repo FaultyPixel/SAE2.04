@@ -14,12 +14,27 @@ def client_panier_add():
     mycursor = get_db().cursor()
     idSki = request.form.get("idArticle")
     userID = session["user_id"]
-    qteInput = f"input-{idSki}"
-    qte = request.form.get(qteInput)
+    qte = int(request.form.get("quantite", 1))
     print(userID)
     print(idSki)
     print(qte)
-    sql = """INSERT INTO PANIER(quantite_panier, id_user, id_ski) VALUES (%s,%s,%s)"""
+    sql = """SELECT quantite_panier FROM PANIER WHERE id_user=%s AND id_ski=%s"""
+    tpl = (userID, idSki)
+    mycursor.execute(sql, tpl)
+    qte_panier = mycursor.fetchone()
+    print(qte_panier)
+
+    sql = """SELECT stock_ski FROM SKI WHERE id_ski=%s"""
+    mycursor.execute(sql, idSki)
+    stock = mycursor.fetchone()["stock_ski"]
+    if qte_panier:
+        qte += qte_panier["quantite_panier"]
+        if qte > stock:
+            qte = stock
+            flash(f"Il n'y a que {stock} skis disponibles pour cet article")
+        sql = """UPDATE PANIER SET quantite_panier=%s WHERE id_user=%s AND id_ski=%s"""
+    else:
+        sql = """INSERT INTO PANIER(quantite_panier, id_user, id_ski) VALUES (%s,%s,%s)"""
     tpl = (qte, userID, idSki)
     mycursor.execute(sql, tpl)
     get_db().commit()
@@ -29,6 +44,22 @@ def client_panier_add():
 @client_panier.route('/client/panier/delete', methods=['POST'])
 def client_panier_delete():
     mycursor = get_db().cursor()
+    id_ski = request.form.get("idArticle")
+    user_id = session["user_id"]
+    tpl = (user_id, id_ski)
+    print(tpl)
+    sql = """SELECT quantite_panier FROM PANIER WHERE id_user=%s AND id_ski=%s"""
+    mycursor.execute(sql, tpl)
+    qte = mycursor.fetchone()["quantite_panier"]
+    if qte > 1:
+        tpl = (qte-1,id_ski, user_id )
+        sql = """UPDATE PANIER SET quantite_panier=%s WHERE id_ski=%s AND id_user=%s"""
+    else:
+        tpl = (id_ski, user_id)
+        sql = """DELETE FROM PANIER WHERE id_ski=%s and id_user=%s"""
+    mycursor.execute(sql, tpl)
+
+    get_db().commit()
 
     return redirect('/client/article/show')
     #return redirect(url_for('client_index'))
@@ -37,7 +68,10 @@ def client_panier_delete():
 @client_panier.route('/client/panier/vider', methods=['POST'])
 def client_panier_vider():
     mycursor = get_db().cursor()
-
+    sql = """DELETE FROM PANIER WHERE id_user=%s"""
+    tpl = session["user_id"]
+    mycursor.execute(sql, tpl)
+    get_db().commit()
     return redirect('/client/article/show')
     #return redirect(url_for('client_index'))
 
@@ -45,7 +79,11 @@ def client_panier_vider():
 @client_panier.route('/client/panier/delete/line', methods=['POST'])
 def client_panier_delete_line():
     mycursor = get_db().cursor()
-
+    id_ski = request.form.get("idArticle")
+    sql = """DELETE FROM PANIER WHERE id_ski=%s AND id_user=%s"""
+    tpl = (id_ski, session["user_id"])
+    mycursor.execute(sql, tpl)
+    get_db().commit()
     return redirect('/client/article/show')
     #return redirect(url_for('client_index'))
 

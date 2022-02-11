@@ -35,6 +35,10 @@ def client_article_show():  # remplace client_index
     mycursor.execute(query, tpl)
     articles_panier = mycursor.fetchall()
 
+    sql = """SELECT * FROM TYPE_SKI"""
+    mycursor.execute(sql)
+    types_articles = mycursor.fetchall();
+
     prix_total = None
     return render_template('client/boutique/panier_article.html', articles=articles, articlesPanier=articles_panier,
                            prix_total=prix_total, itemsFiltre=types_articles)

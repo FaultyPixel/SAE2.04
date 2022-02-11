@@ -34,17 +34,17 @@
                                {% if itemPanier.stock_ski is defined and itemPanier.stock_ski > 0 %}
                                 <form action="/client/panier/add" style="display: inline-block;"  method="post">
                                         <input type="hidden" name="quantite" value="1">
-                                        <input type="hidden" name="idArticle" value="{{ itemPanier.article_id }}">
+                                        <input type="hidden" name="idArticle" value="{{ itemPanier.id_ski }}">
                                     <button class="btn btn-primary" > + </button>
                                 </form>
                                {% endif %}
                                 <form action="/client/panier/delete"  style="display: inline-block;"  method="post">
-                                    <input type="hidden" name="idArticle" value="{{ itemPanier.article_id }}">
+                                    <input type="hidden" name="idArticle" value="{{ itemPanier.id_ski }}">
                                     <button class="btn btn-primary" > - </button>
                                 </form>
 
                                 <form action="/client/panier/delete/line" style="display: inline-block;"  method="post">
-                                    <input type="hidden" name="idArticle" value="{{ itemPanier.article_id }}">
+                                    <input type="hidden" name="idArticle" id="idArticle" value="{{ itemPanier.id_ski }}">
                                     <button class="btn btn-primary" >Supprimer</button>
                                 </form>
                             </td>
@@ -104,7 +104,7 @@
                                              </button>
 
                                             <div class="input-group input-group-sm" style="width: 4rem !important;">
-                                                <input type="number" id="input-{{ article.id_ski }}" name="input-{{ article.id_ski }}" step="1" min="0" max="{{ article.stock_ski }}" class="form-control" style="width: 4rem !important;" value="1" name="quantite">
+                                                <input type="number" id="input-{{ article.id_ski }}" id="input-{{ article.id_ski }}" step="1" min="0" max="{{ article.stock_ski }}" class="form-control" style="width: 4rem !important;" value="1" name="quantite">
                                             </div>
                                         </form>
                                 </div>

@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS Fourni;
 DROP TABLE IF EXISTS COMMENTAIRE;
 DROP TABLE IF EXISTS COMMANDE;
 DROP TABLE IF EXISTS PANIER;
+DROP TABLE IF EXISTS Note;
 DROP TABLE IF EXISTS SKI;
 DROP TABLE IF EXISTS LIVRAISON_STOCK;
 DROP TABLE IF EXISTS ETAT;
@@ -115,8 +116,6 @@ CREATE TABLE IF NOT EXISTS SKI(
    poids_ski INT,
    longueur_ski INT,
    stock_ski INT,
-   note_ski DECIMAL(2,1),
-   nb_note INT,
    AAAA INT,
    id_pays_fabrication INT NOT NULL,
    id_niveau_skieur INT,
@@ -193,6 +192,15 @@ CREATE TABLE IF NOT EXISTS Est_contenu(
    PRIMARY KEY(id_ski, id_livraison_stock),
    FOREIGN KEY(id_ski) REFERENCES SKI(id_ski),
    FOREIGN KEY(id_livraison_stock) REFERENCES LIVRAISON_STOCK(id_livraison_stock)
+)CHARACTER SET utf8mb4;
+
+CREATE TABLE Note(
+   id_user INT,
+   valeur_note DECIMAL(2,1),
+   id_ski INT NOT NULL,
+   PRIMARY KEY(id_user),
+   FOREIGN KEY(id_user) REFERENCES USER(id_user),
+   FOREIGN KEY(id_ski) REFERENCES SKI(id_ski)
 )CHARACTER SET utf8mb4;
 
 # INSERTION BASE USERS

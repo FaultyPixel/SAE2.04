@@ -20,63 +20,188 @@ def admin_gestion():
     user = mycursor.fetchall()
     return render_template('admin/client/gestion_client.html', user=user)
 
-@admin_client.route('/admin/client/gestion/delete', methods=['GET'])
+@admin_client.route('/admin/client/delete', methods=['GET'])
 def delete_client():
     mycursor = get_db().cursor()
-    id_client = request.args.get('id')
-    tuple_insert = id_client
-    sql = '''SELECT * FROM COMMANDE 
-            INNER JOIN user u on commande.id_user = u.id_user
-            INNER JOIN etat e on commande.id_etat = e.id_etat
-            WHERE COMMANDE.id_user = %s;'''
-    mycursor.execute(sql, tuple_insert)
+    id_user = request.args.get('id')
+    print(id_user)
+    tuple_insert = id_user
+    sqlL = '''SELECT * FROM COMMANDE AS c
+                WHERE c.id_user = %s;'''
+    sqlP = '''SELECT * FROM PANIER AS p
+                WHERE p.id_user = %s;'''
+    sqlC = '''SELECT * FROM COMMENTAIRE AS c 
+                    WHERE c.id_user = %s;'''
+    mycursor.execute(sqlL, tuple_insert)
     commande = mycursor.fetchall()
+    mycursor.execute(sqlP, tuple_insert)
+    panier = mycursor.fetchall()
+    mycursor.execute(sqlC, tuple_insert)
+    commentaire = mycursor.fetchall()
     print(commande)
-    if commande:
-        return render_template('admin/client/delete_client.html', commande=commande)
+    print(panier)
+    print(commentaire)
+    if commande or panier or commentaire:
+        sql = '''SELECT u.id_user, u.username_user FROM USER AS u
+                            WHERE u.id_user = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        user = mycursor.fetchone()
+        print(user)
+        return render_template('admin/client/delete_client.html', commande=commande, panier=panier, commentaire=commentaire, user=user)
     else:
         sql = '''DELETE FROM USER WHERE USER.id_user = %s;'''
         mycursor.execute(sql, tuple_insert)
         get_db().commit()
-    print("Je delete le client id : "+id_client)
-    return redirect("/admin/client/gestion")
+        print("un utilisateur supprimé, id :", id_user)
+        flash(u'un utilisateur supprimé, id : ' + id_user)
+        return redirect(url_for('admin_client.admin_gestion'))
 
-@admin_client.route('/admin/client/gestion/delete/all', methods=['GET'])
+@admin_client.route('/admin/client/delete/panier', methods=['GET'])
+def delete_user_panier():
+    mycursor = get_db().cursor()
+    id_panier = request.args.get('id')[-2]
+    id_user = request.args.get('id')[-1]
+    tuple_insert = id_panier
+    sql = '''DELETE FROM PANIER WHERE PANIER.id_panier = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
+    tuple_insert = id_user
+    sqlL = '''SELECT * FROM COMMANDE AS c
+                    WHERE c.id_user = %s;'''
+    sqlP = '''SELECT * FROM PANIER AS p
+                    WHERE p.id_user = %s;'''
+    sqlC = '''SELECT * FROM COMMENTAIRE AS c 
+                        WHERE c.id_user = %s;'''
+    mycursor.execute(sqlL, tuple_insert)
+    commande = mycursor.fetchall()
+    mycursor.execute(sqlP, tuple_insert)
+    panier = mycursor.fetchall()
+    mycursor.execute(sqlC, tuple_insert)
+    commentaire = mycursor.fetchall()
+    if commande or panier or commentaire:
+        sql = '''SELECT u.id_user, u.username_user FROM USER AS u
+                            WHERE u.id_user = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        user = mycursor.fetchone()
+        print(user)
+        return render_template('admin/client/delete_client.html', commande=commande, panier=panier,
+                               commentaire=commentaire, user=user)
+    else:
+        sql = '''DELETE FROM USER WHERE USER.id_user = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        get_db().commit()
+        print("un utilisateur supprimé, id :", id_user)
+        flash(u'un utilisateur supprimé, id : ' + id_user)
+        return redirect(url_for('admin_client.admin_gestion'))
+
+@admin_client.route('/admin/client/delete/commande', methods=['GET'])
+def delete_client_commande():
+    mycursor = get_db().cursor()
+    id_commande = request.args.get('id')[-2]
+    id_user = request.args.get('id')[-1]
+    tuple_insert = id_commande
+    sql = '''DELETE FROM LIGNE WHERE LIGNE.id_commande = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
+    sql = '''DELETE FROM COMMANDE WHERE COMMANDE.id_commande = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
+    tuple_insert = id_user
+    sqlL = '''SELECT * FROM COMMANDE AS c
+                        WHERE c.id_user = %s;'''
+    sqlP = '''SELECT * FROM PANIER AS p
+                        WHERE p.id_user = %s;'''
+    sqlC = '''SELECT * FROM COMMENTAIRE AS c 
+                            WHERE c.id_user = %s;'''
+    mycursor.execute(sqlL, tuple_insert)
+    commande = mycursor.fetchall()
+    mycursor.execute(sqlP, tuple_insert)
+    panier = mycursor.fetchall()
+    mycursor.execute(sqlC, tuple_insert)
+    commentaire = mycursor.fetchall()
+    if commande or panier or commentaire:
+        sql = '''SELECT u.id_user, u.username_user FROM USER AS u
+                            WHERE u.id_user = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        user = mycursor.fetchone()
+        print(user)
+        return render_template('admin/client/delete_client.html', commande=commande, panier=panier,
+                               commentaire=commentaire, user=user)
+    else:
+        sql = '''DELETE FROM USER WHERE USER.id_user = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        get_db().commit()
+        print("un utilisateur supprimé, id :", id_user)
+        flash(u'un utilisateur supprimé, id : ' + id_user)
+        return redirect(url_for('admin_client.admin_gestion'))
+
+@admin_client.route('/admin/client/delete/commentaire', methods=['GET'])
+def delete_client_commentaire():
+    mycursor = get_db().cursor()
+    id_commentaire = request.args.get('id')[-2]
+    id_user = request.args.get('id')[-1]
+    tuple_insert = id_commentaire
+    sql = '''DELETE FROM COMMENTAIRE WHERE COMMENTAIRE.id_commentaire = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
+    tuple_insert = id_user
+    sqlL = '''SELECT * FROM COMMANDE AS c
+                            WHERE c.id_user = %s;'''
+    sqlP = '''SELECT * FROM PANIER AS p
+                            WHERE p.id_user = %s;'''
+    sqlC = '''SELECT * FROM COMMENTAIRE AS c 
+                                WHERE c.id_user = %s;'''
+    mycursor.execute(sqlL, tuple_insert)
+    commande = mycursor.fetchall()
+    mycursor.execute(sqlP, tuple_insert)
+    panier = mycursor.fetchall()
+    mycursor.execute(sqlC, tuple_insert)
+    commentaire = mycursor.fetchall()
+    if commande or panier or commentaire:
+        sql = '''SELECT u.id_user, u.username_user FROM USER AS u
+                                WHERE u.id_user = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        user = mycursor.fetchone()
+        print(user)
+        return render_template('admin/client/delete_client.html', commande=commande, panier=panier,
+                               commentaire=commentaire, user=user)
+    else:
+        sql = '''DELETE FROM USER WHERE USER.id_user = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        get_db().commit()
+        print("un utilisateur supprimé, id :", id_user)
+        flash(u'un utilisateur supprimé, id : ' + id_user)
+        return redirect(url_for('admin_client.admin_gestion'))
+
+@admin_client.route('/admin/client/delete/all', methods=['GET'])
 def delete_all():
     mycursor = get_db().cursor()
-    id_client = request.args.get('id')
-    tuple_insert = id_client
+    id_user = request.args.get('id')
+    tuple_insert = id_user
+    sql = '''SELECT COMMANDE.id_commande FROM COMMANDE WHERE COMMANDE.id_user = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    ligne = mycursor.fetchall()
+    for elt in ligne:
+        tuple_insert = elt['id_commande']
+        sql = '''DELETE FROM LIGNE WHERE LIGNE.id_commande = %s;'''
+        mycursor.execute(sql, tuple_insert)
+        get_db().commit()
+    tuple_insert = id_user
+    sql = '''DELETE FROM COMMENTAIRE WHERE COMMENTAIRE.id_user = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
     sql = '''DELETE FROM COMMANDE WHERE COMMANDE.id_user = %s;'''
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
+    sql = '''DELETE FROM PANIER WHERE PANIER.id_user = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
     sql = '''DELETE FROM USER WHERE USER.id_user = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
-    return redirect('/admin/client/gestion')
-
-@admin_client.route('/admin/client/gestion/delete/commande', methods=['GET'])
-def delete_client_user():
-    mycursor = get_db().cursor()
-    id_commande = request.args.get('id')[0]
-    id_client = request.args.get('id')[1]
-    tuple_insert = id_commande
-    sql = '''DELETE FROM COMMANDE WHERE COMMANDE.id_commande = %s;'''
-    mycursor.execute(sql, tuple_insert)
-    get_db().commit()
-    tuple_insert = id_client
-    sql = '''SELECT * FROM COMMANDE 
-            INNER JOIN user u on commande.id_user = u.id_user
-            INNER JOIN etat e on commande.id_etat = e.id_etat
-            WHERE COMMANDE.id_user = %s;'''
-    mycursor.execute(sql, tuple_insert)
-    commande = mycursor.fetchall()
-    if commande != ():
-        return render_template('admin/client/delete_client.html', commande=commande)
-    else:
-        sql = '''DELETE FROM USER WHERE USER.id_user = %s;'''
-        mycursor.execute(sql, tuple_insert)
-        get_db().commit()
-        return redirect('/admin/client/gestion')
+    print("un utilisateur supprimé, id :", id_user)
+    flash(u'un utilisateur supprimé, id : ' + id_user)
+    return redirect(url_for('admin_client.admin_gestion'))
 
 
 @admin_client.route('/admin/client/gestion/add', methods=['GET'])

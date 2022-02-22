@@ -1,13 +1,106 @@
-{% extends 'admin/layout_admin.html' %}
-
-{% block title %}
-    <title>ajouter un article</title>
-{% endblock %}
-
+{% extends "admin/layout_admin.html" %}
 {% block body %}
-  <h2>ajout d'un article</h2>
-  {% if error %}
-    <p class=error><strong>Error:</strong> {{ error }}
-  {% endif %}
+<form method="post" action="/admin/article/add">
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <br>
+            <div class="alert alert-warning">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Ajouter un article</h1>
+
+    <label for="modele_ski">Modele du ski</label>
+    <input type="text" name="modele_ski" class="form-control" value="" required autofocus  placeholder="Entrez le modele">
+
+    <label for="image_ski">Image</label>
+    <input type="text" name="image_ski" class="form-control" value="" required  placeholder="Image.png"  >
+
+    <label for="prix_ski">Prix</label>
+    <input type="number" name="prix_ski" class="form-control" value="" required  placeholder="Prix €">
+
+    <label for="poids_ski">Poids</label>
+    <input type="number" name="poids_ski" class="form-control" value="" required  placeholder="Poids g">
+
+    <label for="longueur_ski">Longueur</label>
+    <input type="number" name="longueur_ski" class="form-control" value="" required  placeholder="Longueur cm">
+
+    <label for="stock_ski">Stock</label>
+    <input type="number" name="stock_ski" class="form-control" value="" required  placeholder="Nombre"  >
+
+    <label for="AAAA">Année</label>
+    <input type="number" name="AAAA" class="form-control" value="" required  placeholder="Annee">
+
+    <label for="id_pays_fabrication">Pays de fabrication</label>
+    <select class="form-control form-control-lg" name="id_pays_fabrication" required>
+        <option value="">Sélectionner un pays</option>
+            {% for elt in pays_fabrication %}
+            <option value="{{ elt.id_pays_fabrication }}"> {{ elt.libelle_pays_fabrication }} </option>
+            {% endfor %}
+    </select>
+
+    <label for="id_niveau_skieur">Niveau du skieur</label>
+    <select class="form-control form-control-lg" name="id_niveau_skieur" required>
+        <option value="">Sélectionner un niveau</option>
+            {% for elt in niveau_skieur %}
+            <option value="{{ elt.id_niveau_skieur }}"> {{ elt.libelle_niveau_skieur }} </option>
+            {% endfor %}
+    </select>
+
+    <label for="id_poids_skieur">Poids du skieur</label>
+    <select class="form-control form-control-lg" name="id_poids_skieur" required>
+        <option value="">Sélectionner un poids</option>
+            {% for elt in poids_skieur %}
+            <option value="{{ elt.id_poids_skieur }}">{{ elt.poids_skieur_min }} kg - {{ elt.poids_skieur_max }} kg</option>
+            {% endfor %}
+    </select>
+
+    <label for="id_noyau">Noyau du ski</label>
+    <select class="form-control form-control-lg" name="id_noyau" required>
+        <option value="">Sélectionner un noyau</option>
+            {% for elt in noyau %}
+            <option value="{{ elt.id_noyau }}">{{ elt.libelle_noyau }}</option>
+            {% endfor %}
+    </select>
+
+    <label for="id_fixation">Fixation du ski</label>
+    <select class="form-control form-control-lg" name="id_fixation" required>
+        <option value="">Sélectionner une fixation</option>
+            {% for elt in fixation %}
+            <option value="{{ elt.id_fixation }}">{{ elt.libelle_fixation }}</option>
+            {% endfor %}
+    </select>
+
+    <label for="id_sexe">Sexe</label>
+    <select class="form-control form-control-lg" name="id_sexe" required>
+        <option value="">Sélectionner un sexe</option>
+            {% for elt in sexe %}
+            <option value="{{ elt.id_sexe }}">{{ elt.libelle_sexe }}</option>
+            {% endfor %}
+    </select>
+
+    <label for="id_fabricant">Fabricant du ski</label>
+    <select class="form-control form-control-lg" name="id_fabricant" required>
+        <option value="">Sélectionner un fabricant</option>
+            {% for elt in fabricant %}
+            <option value="{{ elt.id_fabricant }}">{{ elt.libelle_fabricant }}</option>
+            {% endfor %}
+    </select>
+
+    <label for="id_type_ski">Type de ski</label>
+    <select class="form-control form-control-lg" name="id_type_ski" required>
+        <option value="">Sélectionner un type</option>
+            {% for elt in type_ski %}
+            <option value="{{ elt.id_type_ski }}">{{ elt.libelle_type_ski }}</option>
+            {% endfor %}
+    </select>
+
+    <button class="btn btn-lg btn-primary mt-4" type="submit">
+        Valider l'article
+    </button>
+</form><br>
 
 {% endblock %}

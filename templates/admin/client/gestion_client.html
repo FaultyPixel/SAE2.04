@@ -30,9 +30,9 @@
                         {% endif %}
                         <td>{{ elt.email_user }}</td>
                         <td>{{ elt.adresse_user }}</td>
-                        <td class="EANDD">
+                        <td>
                             <a class="edit" href="/admin/client/gestion/edit/{{ elt.id_user }}">Editer</a>
-                            <a class="delete" href="/admin/client/gestion/delete?id={{ elt.id_user }}">Supprimer</a>
+                            <a class="delete" href="/admin/client/delete?id={{ elt.id_user }}">Supprimer</a>
                         </td>
                     </tr>
                 {% endfor %}

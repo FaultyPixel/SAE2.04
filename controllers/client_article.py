@@ -62,6 +62,8 @@ def client_article_details(id):
     mycursor.execute(sql, id)
     article = mycursor.fetchone()
     commentaires = None
+
+
     commandes_articles = None
     return render_template('client/boutique/article_details.html', article=article, commentaires=commentaires,
                            commandes_articles=commandes_articles)

@@ -65,6 +65,8 @@ def client_commande_show():
                 WHERE id_user = %s;'''
     mycursor.execute(sql, session['user_id'])
     commandes = mycursor.fetchall()
+    if commandes[0]["id_commande"] == None:
+        commandes = None
     print(commandes)
 
     sql = ''' SELECT Ligne.id_ski, Ligne.id_commande, prix_unit_ligne AS prix, quantite_ligne AS quantite, prix_unit_ligne*quantite_ligne AS prix_ligne, modele_ski AS nom

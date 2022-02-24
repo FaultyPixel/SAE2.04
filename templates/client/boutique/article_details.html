@@ -16,30 +16,30 @@
     </div>
 
     <div class="row" style="background-color: #ba8b00">
-        {% if commandes_articles | length > 0 %}
-            <div class="col-12">
-                 Vous avez commandé <strong>{{ commandes_articles | length }} </strong>fois  ce produit
-            </div>
-            <form  action="/client/comment/add"  method="post">
-                <div class="col">
-                  <label for="inputAvis" class="form-label">Mettez un commentaire sur cet article : </label>
-                     <textarea name="commentaire" class="form-control" aria-label="Donnez votre avis" id="inputAvis"  placeholder="Donnez votre avis"></textarea>
-                </div>
-                <div class="col-12">
-                    <label for="inputNote" class="form-label">Donnez une note à cet article </label>
-                    <input type="number" name="note" id="inputNote" step="0.1" min="0" max="5" class="form-control" style="width: 8rem !important;" value="" >
-                </div>
-                <input type="hidden" name="idUser" value="{{ session['user_id'] }}">
-                <input type="hidden" name="idArticle" value="{{ article.id }}">
-                <form  action="/client/comment/add" style="display: inline-block;"  method="post" >
-                        <button class="btn btn-primary" > Ajouter un avis </button>
-                </form>
-            </form>
-
-
-        {% else %}
-            vous n'avez jamais acheté ce produit
-        {% endif %}
+{#        {% if commandes_articles | length > 0 %}#}
+{#            <div class="col-12">#}
+{#                 Vous avez commandé <strong>{{ commandes_articles | length }} </strong>fois  ce produit#}
+{#            </div>#}
+{#            <form  action="/client/comment/add"  method="post">#}
+{#                <div class="col">#}
+{#                  <label for="inputAvis" class="form-label">Mettez un commentaire sur cet article : </label>#}
+{#                     <textarea name="commentaire" class="form-control" aria-label="Donnez votre avis" id="inputAvis"  placeholder="Donnez votre avis"></textarea>#}
+{#                </div>#}
+{#                <div class="col-12">#}
+{#                    <label for="inputNote" class="form-label">Donnez une note à cet article </label>#}
+{#                    <input type="number" name="note" id="inputNote" step="0.1" min="0" max="5" class="form-control" style="width: 8rem !important;" value="" >#}
+{#                </div>#}
+{#                <input type="hidden" name="idUser" value="{{ session['user_id'] }}">#}
+{#                <input type="hidden" name="idArticle" value="{{ article.id }}">#}
+{#                <form  action="/client/comment/add" style="display: inline-block;"  method="post" >#}
+{#                        <button class="btn btn-primary" > Ajouter un avis </button>#}
+{#                </form>#}
+{#            </form>#}
+{##}
+{##}
+{#        {% else %}#}
+{#            vous n'avez jamais acheté ce produit#}
+{#        {% endif %}#}
 
     </div>
 

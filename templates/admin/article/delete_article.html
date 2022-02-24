@@ -1,24 +1,24 @@
 {% extends "admin/layout_admin.html" %}
 {% block body %}
-    <h1 class="red">Suppression de l'utilisateur : {{ user.username_user }} impossible</h1><br>
+    <h1 class="red">Suppression de l'article : {{ ski.modele_ski }} impossible</h1><br>
     <h2>Veuillez d'abord supprimer les commandes, les paniers et les commentaires ci-dessous :</h2><br>
-    <h5 class="sup"><a class="p-2" href="/admin/client/delete/all?id={{ user.id_user }}"
+    <h5 class="sup"><a class="p-2" href="/admin/article/delete/all?id={{ ski.id_ski }}"
                        onclick="return confirm('Are you sure?')" style="color: white; background-color: #005cbf;
     border-radius: 10px;">Cliquez ici pour supprimer toutes les commandes, les paniers et les commentaires</a></h5>
     <br><br>
-    {% if commande | length >= 1 %}
+    {% if ligne | length >= 1 %}
         <table class="table table-dark table-bordered">
-            <caption style="caption-side: top; font-size: xx-large; color: black; font-weight: bold;">Commandes pour l'utilisateur :</caption>
+            <caption style="caption-side: top; font-size: xx-large; color: black; font-weight: bold;">Article dans la commande :</caption>
             <tr>
                 <th>ID de la commande</th>
                 <th>Opération</th>
             </tr>
-        {% for elt in commande %}
+        {% for elt in ligne %}
             <tr>
                 <td>{{ elt.id_commande }}</td>
                 <td class="sup"><a class="delete"
-                                   href="/admin/client/delete/commande?id=
-                                           {{ elt.id_commande }}{{ user.id_user }}"
+                                   href="/admin/article/delete/ligne?id=
+                                           {{ elt.id_commande }}{{ ski.id_ski }}"
                                    onclick="return confirm('Are you sure?')">Supprimer</a>
                 </td>
             </tr>
@@ -36,10 +36,10 @@
         {% for elt in panier %}
             <tr>
                 <td>{{ elt.id_panier }}</td>
-                <td>{{ user.username_user }}</td>
+                <td>{{ elt.username_user }}</td>
                 <td class="sup"><a class="delete"
-                                   href="/admin/client/delete/panier?id=
-                                           {{ elt.id_panier }}{{ user.id_user }}"
+                                   href="/admin/article/delete/panier?id=
+                                           {{ elt.id_panier }}{{ ski.id_ski }}"
                                    onclick="return confirm('Are you sure?')">Supprimer</a>
                 </td>
             </tr>
@@ -57,10 +57,10 @@
         {% for elt in commentaire %}
             <tr>
                 <td>{{ elt.id_commentaire }}</td>
-                <td>{{ user.username_user }}</td>
+                <td>{{ elt.username_user }}</td>
                 <td class="sup"><a class="delete"
-                                   href="/admin/client/delete/commentaire?id=
-                                           {{ elt.id_commentaire }}{{ user.id_user }}"
+                                   href="/admin/article/delete/commentaire?id=
+                                           {{ elt.id_commentaire }}{{ ski.id_ski }}"
                                    onclick="return confirm('Are you sure?')">Supprimer</a>
                 </td>
             </tr><br>

@@ -5,9 +5,19 @@
 {% endblock %}
 
 {% block body %}
-{#  <h2>ajout d'un type d'article</h2>#}
   {% if error %}
     <p class=error><strong>Error:</strong> {{ error }}
   {% endif %}
+    <form method="post" action="/admin/type-article/add">
+
+        <h1 class="h3 mb-3 font-weight-normal">Ajouter un type d'article</h1>
+
+        <label for="libelle_type_ski">Libelle du type de ski</label>
+        <input type="text" name="libelle_type_ski" class="form-control" value="" required autofocus  placeholder="Entrez le libelle">
+
+        <button class="btn btn-lg btn-primary mt-4" type="submit">
+            Valider le type de ski
+        </button>
+    </form><br>
 
 {% endblock %}

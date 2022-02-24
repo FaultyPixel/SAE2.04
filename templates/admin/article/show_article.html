@@ -1,13 +1,51 @@
-{% extends 'admin/layout_admin.html' %}
+{% extends "admin/layout_admin_article.html" %}
 
 {% block title %}
-    <title>afficher les articles</title>
+    <title>afficher les skis</title>
 {% endblock %}
 
 {% block body %}
-<h3>articles</h3>
-<a  class="btn btn-outline-success" href="/admin/article/add">ajouter un article</a>
-<br><br>
-
-
+    <br><h1>Tableau des skis</h1>
+    <a class="btn btn-outline-success" href="/admin/article/add">ajouter un ski</a><br><br>
+    {% if articles | length >=1 %}
+    <table class="table table-dark table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Modèle ski</th>
+                <th>Prix unitaire</th>
+                <th>Poids</th>
+                <th>Longueur</th>
+                <th>Stock</th>
+                <th>Note</th>
+                <th>Année</th>
+                <th>Opérations</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for elt in articles %}
+            <tr>
+                <td>{{ elt.id_ski }}</td>
+                <td>{{ elt.modele_ski }}</td>
+                <td>{{ elt.prix_ski }}€</td>
+                <td>{{ elt.poids_ski }}g</td>
+                <td>{{ elt.longueur_ski }}cm</td>
+                <td>{{ elt.stock_ski }}</td>
+                {% if elt.valeur_note %}
+                <td>{{ elt.valeur_note }}/10</td>
+                {% else %}
+                <td>Pas de note</td>
+                {% endif %}
+                <td>{{ elt.AAAA }}</td>
+                <td>
+                    <a class="edit" href="/admin/article/edit/{{ elt.id_ski }}">Editer</a>
+                    <a class="delete" href="/admin/article/delete?id={{ elt.id_ski }}">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h1>Pas d'article</h1>
+    {% endif %}
 {% endblock %}

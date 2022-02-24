@@ -1,45 +1,73 @@
 {% extends "admin/layout_admin.html" %}
 {% block body %}
     {% block tableau %}
-        <h1>Tableau des commandes</h1>
-        <br><br>
-        <table class="table table-dark table-bordered">
-            <thead>
-            <tr>
-                <th>Id commmande</th>
-                <th>Date achat</th>
-                <th>Client | (id)</th>
-                <th>Email</th>
-                <th>Adresse</th>
-                <th>Etat de la commande</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% if commande | length >= 1 %}
-                {% for elt in commande %}
+        <br><h1>Tableaux des commandes</h1>
+        {% if commande_classe | length >=1 %}
+            {% for elt in commande_classe.keys() %}
+                <br><br>
+                <table class="table table-dark table-bordered">
+                    <caption style="caption-side: top; font-size: xx-large; color: black; font-weight: bold;">Tableau de
+                        la commande
+                        numéro {{ elt }}
+                    </caption>
+                    <thead>
                     <tr>
-                        <td>{{ elt.id_commande }}</td>
-                        <td>{{ elt.date_achat_commande }}</td>
-                        <td>{{ elt.username_user }} | {{ elt.id_user }}</td>
-                        <td>{{ elt.email_user }}</td>
-                        <td>{{ elt.adresse_user }}</td>
-                        {% if elt.id_etat == 1 %}
-                        <td style="background-color: #1e7e34; color: white">{{ elt.libelle_etat }}</td>
-                        {% elif elt.id_etat == 2 %}
-                        <td style="background-color: orange; color: white">{{ elt.libelle_etat }}</td>
-                        {% else %}
-                        <td>{{ elt.libelle_etat }}</td>
-                        {% endif %}
+                        <th>Modèle ski | (id)</th>
+                        <th>Prix unitaire</th>
+                        <th>Prix total | Quantite</th>
                     </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td>
-                        pas de commande
-                    </td>
-                </tr>
-            {% endif %}
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                    {% for value in commande_classe[elt] %}
+                        <tr>
+                            <td>{{ value.modele_ski }} | {{ value.id_ski }}</td>
+                            <td>{{ value.prix_unit_ligne }} €</td>
+                            <td>{{ value.prix_unit_ligne*value.quantite_ligne }} € | {{ value.quantite_ligne }}</td>
+                        </tr>
+                    {% endfor %}
+                        <tr style="background-color: black;">
+                            <th style="text-align: start;">Total de la commande</th>
+                            <td colspan="2" >{{ totaux[elt][6] }} €</td>
+                        </tr>
+                    </tbody>
+                    <table class="table table-dark table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Client | (id du client)</th>
+                            <th>Date achat</th>
+                            <th>Email</th>
+                            <th>Adresse</th>
+                            <th>Etat de la commande</th>
+                            <th>Opérations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ totaux[elt][1] }} | {{ totaux[elt][2] }}</td>
+                            <td>{{ totaux[elt][5] }}</td>
+                            <td>{{ totaux[elt][3] }}</td>
+                            <td>{{ totaux[elt][4] }}</td>
+                            {% if totaux[elt][0] == 'Préparation' %}
+                                <td style="background-color: #000982; color: white">{{ totaux[elt][0] }}</td>
+                            {% elif totaux[elt][0] == 'Livraison' %}
+                                <td style="background-color: #fd7e14; color: white">{{ totaux[elt][0] }}</td>
+                            {% elif totaux[elt][0] == 'Livré' %}
+                                <td style="background-color: #1e7e34; color: white">{{ totaux[elt][0] }}</td>
+                            {% elif totaux[elt][0] == 'Annulé' %}
+                                <td style="background-color: #c82333; color: white">{{ totaux[elt][0] }}</td>
+                            {% else %}
+                                <td>{{ totaux[elt][0] }}</td>
+                            {% endif %}
+                            <td>
+                                <a class="edit" href="/admin/commande/edit/{{ elt }}">Editer</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </table>
+            {% endfor %}
+        {% else %}
+            <h4>Pas de commande</h4>
+        {% endif %}
     {% endblock tableau %}
 {% endblock %}

@@ -1,13 +1,38 @@
 {% extends 'admin/layout_admin.html' %}
 
 {% block title %}
-    <title>afficher les types d'article</title>
+    <title>afficher les types de ski</title>
 {% endblock %}
 
 {% block body %}
-<h3>Types d'article</h3>
-<a class="btn btn-outline-success" href="/admin/type-article/add">ajouter un type d'article</a>
-<br><br>
-
-
+    <br><h1>Tableau des types de ski</h1>
+    <a class="btn btn-outline-success" href="/admin/type-article/etat">Etat des types de ski</a><br>
+    <a class="btn btn-outline-success" href="/admin/type-article/add">Ajouter un type de ski</a><br><br>
+    {% if types_articles | length >=1 %}
+    <table class="table table-dark table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Libelle</th>
+                <th>Nombre de ski</th>
+                <th>Opérations</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for elt in types_articles %}
+            <tr>
+                <td>{{ elt.id_type_ski }}</td>
+                <td>{{ elt.libelle_type_ski }}</td>
+                <td>{{ elt.Nb_ski }}</td>
+                <td>
+                    <a class="edit" href="/admin/type-article/edit/{{ elt.id_type_ski }}">Editer</a>
+                    <a class="delete" href="/admin/type-article/delete?id={{ elt.id_type_ski }}">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h1>Pas de type de ski</h1>
+    {% endif %}
 {% endblock %}

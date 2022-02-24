@@ -2,3 +2,54 @@ h1 { color: green;}
 
 br , h2 { color: blue; }
 
+td, th {
+    text-align: center;
+}
+
+.delete {
+    padding: 8px;
+    color: white;
+    background-color: red;
+    width: auto;
+    height: auto;
+    border: 2px solid white;
+    border-radius: 8px;
+    font-weight: normal;
+}
+
+.ajout {
+    padding: 8px;
+    color: white;
+    background-color: #00cc00;
+    width: auto;
+    height: auto;
+    border: 2px solid white;
+    border-radius: 8px;
+}
+
+.edit {
+    padding: 8px;
+    color: white;
+    background-color: orange;
+    width: auto;
+    height: auto;
+    border: 2px solid white;
+    border-radius: 8px;
+}
+
+.edit:hover {
+    background-color: white;
+    color: orange;
+    border: 2px solid orange;
+}
+
+.delete:hover {
+    background-color: white;
+    color: red;
+    border: 2px solid red;
+}
+
+.contai{
+    margin-left: 50px;
+    margin-right: 50px;
+}

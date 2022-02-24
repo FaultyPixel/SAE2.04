@@ -22,24 +22,25 @@ def client_article_show():  # remplace client_index
                JOIN SEXE s on SKI.id_sexe = s.id_sexe
                JOIN TYPE_SKI ts on SKI.id_type_ski = ts.id_type_ski
                """
-    mycursor.execute(query);
-    articles = mycursor.fetchall();
-    print(articles)
-
-    sql = """SELECT * FROM type_ski"""
     mycursor.execute(query)
-    types_articles = mycursor.fetchall()
+    articles = mycursor.fetchall()
+
     user_id = session['user_id']
     query = f"""SELECT * FROM PANIER JOIN SKI ON PANIER.id_ski = SKI.id_ski WHERE id_user=%s"""
     tpl = (user_id)
     mycursor.execute(query, tpl)
     articles_panier = mycursor.fetchall()
 
-    sql = """SELECT * FROM TYPE_SKI"""
-    mycursor.execute(sql)
-    types_articles = mycursor.fetchall();
+    sql = """SELECT prix_ski, quantite_panier FROM SKI JOIN PANIER ON SKI.id_ski = PANIER.id_ski WHERE id_user=%s"""
+    mycursor.execute(sql, tpl)
+    res = mycursor.fetchall()
+    prix_total = 0
+    for row in res:
+        prix_total += row["prix_ski"] * row["quantite_panier"]
 
-    prix_total = None
+    query = """SELECT * FROM TYPE_SKI"""
+    mycursor.execute(query)
+    types_articles = mycursor.fetchall()
     return render_template('client/boutique/panier_article.html', articles=articles, articlesPanier=articles_panier,
                            prix_total=prix_total, itemsFiltre=types_articles)
 

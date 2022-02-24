@@ -15,14 +15,16 @@ def client_commande_add():
     mycursor = get_db().cursor()
     user_id = session["user_id"]
     sql = "SELECT * FROM PANIER WHERE id_user=%s"
-    panier = mycursor.execute(sql, user_id).fetchall()
+    mycursor.execute(sql, user_id)
+    panier = mycursor.fetchall()
     if panier is None or len(panier) < 1:
         flash(message="Pas d'article dans le panier")
         return  url_for("/client/article/show")
-    date = datetime.datetime.now().date()
+    date = datetime.datetime.now().strftime("%Y-%m-%d")
+    print(type(date))
     print(date)
 
-    tpl = (user_id, date, 1)
+    tpl = (date, 1, user_id)
     sql = "INSERT INTO COMMANDE (date_achat_commande, id_etat, id_user) VALUES (%s,%s,%s)"
     mycursor.execute(sql, tpl)
 
@@ -39,9 +41,11 @@ def client_commande_add():
         sql = """SELECT prix_ski FROM SKI WHERE id_ski=%s"""
         mycursor.execute(sql, ski_id)
         prix_unitaire = mycursor.fetchone()["prix_ski"]
-
-        sql = """INSERT INTO Ligne(id_ski, id_commande, prix_unit_ligne, quantite_ligne)"""
-        tpl = (id)
+        qte = ski["quantite_panier"]
+        sql = """INSERT INTO Ligne(id_ski, id_commande, prix_unit_ligne, quantite_ligne) VALUES(%s,%s,%s,%s)"""
+        tpl = (ski_id, id_commande, prix_unitaire, qte)
+        mycursor.execute(sql, tpl)
+    get_db().commit()
 
 
     flash(u'Commande ajoutée')

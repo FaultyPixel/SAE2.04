@@ -144,7 +144,7 @@ def client_panier_filtre():
         if len(filter_types) != 0:
             if c > 0:
                 sql += "AND "
-            sql += "id_type_ski in %s"
+            sql += "SKI.id_type_ski in %s"
             values.append(filter_types)
 
         # print(sql)

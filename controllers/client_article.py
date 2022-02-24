@@ -48,7 +48,19 @@ def client_article_show():  # remplace client_index
 @client_article.route('/client/article/details/<int:id>', methods=['GET'])
 def client_article_details(id):
     mycursor = get_db().cursor()
-    article = None
+    sql = """SELECT * 
+               FROM SKI
+               JOIN FIXATION ON SKI.id_fixation = FIXATION.id_fixation
+               JOIN NIVEAU_SKIEUR ON NIVEAU_SKIEUR.id_niveau_skieur = SKI.id_niveau_skieur
+               JOIN NOYAU ON SKI.id_noyau = NOYAU.id_noyau
+               JOIN PAYS_FABRICATION pf on SKI.id_pays_fabrication = pf.id_pays_fabrication
+               JOIN POIDS_SKIEUR ps on SKI.id_poids_skieur = ps.id_poids_skieur
+               JOIN SEXE s on SKI.id_sexe = s.id_sexe
+               JOIN TYPE_SKI ts on SKI.id_type_ski = ts.id_type_ski
+               WHERE SKI.id_ski = %s;
+               """
+    mycursor.execute(sql, id)
+    article = mycursor.fetchone()
     commentaires = None
     commandes_articles = None
     return render_template('client/boutique/article_details.html', article=article, commentaires=commentaires,

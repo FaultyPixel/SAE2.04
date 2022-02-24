@@ -9,6 +9,7 @@ from connexion_db import get_db
 admin_client = Blueprint('admin_client', __name__,
                         template_folder='templates')
 
+
 @admin_client.route('/admin/client/gestion')
 def admin_gestion():
     print("Je vais afficher les clients")

@@ -21,7 +21,7 @@ def auth_login_post():
     mycursor = get_db().cursor()
     username = request.form.get('username')
     password = request.form.get('password')
-    sql = '''SELECT * FROM user WHERE username_user = %s'''
+    sql = '''SELECT * FROM USER WHERE username_user = %s'''
     retour = mycursor.execute(sql, (username))
     user = mycursor.fetchone()
     if user:
@@ -67,7 +67,7 @@ def auth_signup_post():
     password = generate_password_hash(password, method='sha256')
     role = 'ROLE_client'
     tuple_insert = (username, email, password, role, adresse)
-    sql = '''INSERT INTO user(username_user,email_user,password_user,role_user, adresse_user) VALUES (%s,%s,%s,%s,%s);'''
+    sql = '''INSERT INTO USER(username_user,email_user,password_user,role_user, adresse_user) VALUES (%s,%s,%s,%s,%s);'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()  # position de cette ligne discutatble !
     sql = '''SELECT last_insert_id() AS last_insert_id;'''

@@ -15,15 +15,15 @@ def client_article_show():  # remplace client_index
     query = """SELECT * 
                FROM SKI
                JOIN FIXATION ON SKI.id_fixation = FIXATION.id_fixation
-               JOIN NIVEAU_SKIEUR ON NIVEAU_SKIEUR.id_niveau_skieur = ski.id_niveau_skieur
+               JOIN NIVEAU_SKIEUR ON NIVEAU_SKIEUR.id_niveau_skieur = SKI.id_niveau_skieur
                JOIN NOYAU ON SKI.id_noyau = NOYAU.id_noyau
                JOIN PAYS_FABRICATION pf on SKI.id_pays_fabrication = pf.id_pays_fabrication
                JOIN POIDS_SKIEUR ps on SKI.id_poids_skieur = ps.id_poids_skieur
                JOIN SEXE s on SKI.id_sexe = s.id_sexe
                JOIN TYPE_SKI ts on SKI.id_type_ski = ts.id_type_ski
                """
-    mycursor.execute(query)
-    articles = mycursor.fetchall()
+    mycursor.execute(query);
+    articles = mycursor.fetchall();
 
     user_id = session['user_id']
     query = f"""SELECT * FROM PANIER JOIN SKI ON PANIER.id_ski = SKI.id_ski WHERE id_user=%s"""

@@ -3,72 +3,77 @@
     <div class="container">
         <div class="row align-self-right">
             <div class="col-7">
-            {% if articlesPanier | length >= 1 %}
-                <h3>Liste des articles dans mon panier</h3>
-                <table class="table table-hover table-responsive">
-                    <tr>
-                        <th style="width: 300px">Nom</th>
-                        <th style="width: 50px">Quantité</th>
-                        <th style="width: 50px">Prix</th>
-                        <th style="width: 100px">Sous-Total</th>
-                        <th style="width: 400px">Action</th>
-                    </tr>
-                    {% if monPanier is defined %}
-                        <td>Votre panier est vide</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    {% else %}
-                    {% for itemPanier in articlesPanier %}
+                {% if articlesPanier | length >= 1 %}
+                    <h3>Liste des articles dans mon panier</h3>
+                    <table class="table table-hover table-responsive">
                         <tr>
-                            <td>{{itemPanier.nom}}</td>
-                            <td>{{itemPanier.quantite}}</td>
-                            {% if itemPanier.prix is defined %}
-                                <td>{{itemPanier.prix}}</td>
-                                <td>{{ "{:,.2f} €".format((itemPanier.prix * itemPanier.quantite)) }}</td>
-                            {% else %} 
-                                <td>prix ND</td><td>prix*qte ND</td>
-                            {% endif %}
-                            <td>
-                               {% if itemPanier.stock is defined and itemPanier.stock > 0 %}
-                                <form action="/client/panier/add" style="display: inline-block;"  method="post">
-                                        <input type="hidden" name="quantite" value="1">
-                                        <input type="hidden" name="idArticle" value="{{ itemPanier.article_id }}">
-                                    <button class="btn btn-primary" > + </button>
-                                </form>
-                               {% endif %}
-                                <form action="/client/panier/delete"  style="display: inline-block;"  method="post">
-                                    <input type="hidden" name="idArticle" value="{{ itemPanier.article_id }}">
-                                    <button class="btn btn-primary" > - </button>
-                                </form>
-
-                                <form action="/client/panier/delete/line" style="display: inline-block;"  method="post">
-                                    <input type="hidden" name="idArticle" value="{{ itemPanier.article_id }}">
-                                    <button class="btn btn-primary" >Supprimer</button>
-                                </form>
-                            </td>
+                            <th style="width: 300px">Nom</th>
+                            <th style="width: 50px">Quantité</th>
+                            <th style="width: 50px">Prix</th>
+                            <th style="width: 100px">Sous-Total</th>
+                            <th style="width: 400px">Action</th>
                         </tr>
-                    {% endfor %}
-                    {% endif %}
-                </table>
-                    <form action="/client/panier/vider" style="display: inline-block;"  method="post" >
-                        <button class="btn btn-primary"  > Éffacer tout </button>
+                        {% if monPanier is defined %}
+                            <td>Votre panier est vide</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        {% else %}
+                            {% for itemPanier in articlesPanier %}
+                                <tr>
+                                    <td>{{ itemPanier.modele_ski }}</td>
+                                    <td>{{ itemPanier.quantite_panier }}</td>
+                                    {% if itemPanier.prix_ski is defined %}
+                                        <td>{{ itemPanier.prix_ski }}</td>
+                                        <td>{{ "{:,.2f} €".format((itemPanier.prix_ski * itemPanier.quantite_panier)) }}</td>
+                                    {% else %}
+                                        <td>prix ND</td>
+                                        <td>prix*qte ND</td>
+                                    {% endif %}
+                                    <td>
+                                        {% if itemPanier.stock_ski is defined and itemPanier.stock_ski > 0 %}
+                                            <form action="/client/panier/add" style="display: inline-block;"
+                                                  method="post">
+                                                <input type="hidden" name="quantite" value="1">
+                                                <input type="hidden" name="idArticle" value="{{ itemPanier.id_ski }}">
+                                                <button class="btn btn-primary"> +</button>
+                                            </form>
+                                        {% endif %}
+                                        <form action="/client/panier/delete" style="display: inline-block;"
+                                              method="post">
+                                            <input type="hidden" name="idArticle" value="{{ itemPanier.id_ski }}">
+                                            <button class="btn btn-primary"> -</button>
+                                        </form>
+
+                                        <form action="/client/panier/delete/line" style="display: inline-block;"
+                                              method="post">
+                                            <input type="hidden" name="idArticle" id="idArticle"
+                                                   value="{{ itemPanier.id_ski }}">
+                                            <button class="btn btn-primary">Supprimer</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </table>
+                    <form action="/client/panier/vider" style="display: inline-block;" method="post">
+                        <button class="btn btn-primary"> Éffacer tout</button>
                     </form>
-                    <form action="/client/commande/add" style="display: inline-block;"  method="post" >
-                        <button class="btn btn-primary" > Passer ma commande </button>
+                    <form action="/client/commande/add" style="display: inline-block;" method="post">
+                        <button class="btn btn-primary"> Passer ma commande</button>
                     </form>
                     {% if prix_total %}
-                    Total à payer : <strong>{{ "{:,.2f} €".format(prix_total) }}</strong>
+                        Total à payer : <strong>{{ "{:,.2f} €".format(prix_total) }}</strong>
                     {% endif %}
-            {% endif %}
+                {% endif %}
             </div>
 
 
             <div class="col">
-              <h3>Les filtres</h3>
-              Articles dont le nom est composé par :<br>
-                 {% include('client/boutique/_filtre.html') %}
+                <h3>Les filtres</h3>
+                Articles dont le nom est composé par :<br>
+                {% include('client/boutique/_filtre.html') %}
             </div>
 
         </div>
@@ -78,63 +83,70 @@
         </div>
 
         <div class="row">
-                {% for article in articles  %}
-                        <div class="card col-4 mt-4">
-                            <div class="card-body border-dark rounded">
-                                <a href="/client/article/details/{{ article.id }}">
-                                <h2 class="card-title">
-                                    <span style="color: #0b2e13">{{ article.nom }}</span><br>
-                                    {{ article.prix }}
-                                    €
-                                </h2>
-                                <div class="card-body">
-                                     {%  if article.image is not none %}
-                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/' + article['image']) }}"  alt="image  de {{ article.nom }}" >
-                                    {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.nom }}" >
-                                    {% endif %}
-                                    <hr>
-                                </div>
-                                </a>
-                                <div class="card-body">
-                                        <form  action="/client/panier/add" method="post">
-                                            <input type="hidden" name="idArticle" value="{{ article.id }}">
-                                            <button class="btn btn-success float-right">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                Ajouter
-                                             </button>
+            {% for article in articles %}
+                <div class="card col-4 mt-4">
+                    <div class="card-body border-dark rounded">
+                        <a href="/client/article/details/{{ article.id_ski }}">
+                            <h2 class="card-title">
+                                <span style="color: #0b2e13">{{ article.modele_ski }}</span><br>
+                                {{ article.prix_ski }}
+                                €
+                            </h2>
+                            <div class="card-body">
+                                {% if article.image_ski is not none %}
+                                    <img class="card-img-top rounded mx-auto d-block" style="width:100px;height:100px"
+                                         src="{{ url_for('static', filename = 'images/' + article['image_ski']) }}"
+                                         alt="image  de {{ article.modele_ski }}">
+                                {% else %}
+                                    <img class="card-img-top rounded mx-auto d-block" style="width:100px;height:100px"
+                                         src="{{ url_for('static', filename='images/no_photo.jpeg') }}"
+                                         alt="image  de {{ article.nom }}">
+                                {% endif %}
+                                <hr>
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <form action="/client/panier/add" method="post">
+                                <input type="hidden" name="idArticle" value="{{ article.id_ski }}">
+                                <button class="btn btn-success float-right">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Ajouter
+                                </button>
 
-                                            <div class="input-group input-group-sm" style="width: 4rem !important;">
-                                                <input type="number" id="input-{{ article.id }}" step="1" min="0" max="{{ article.stock }}" class="form-control" style="width: 4rem !important;" value="1" name="quantite">
-                                            </div>
-                                        </form>
+                                <div class="input-group input-group-sm" style="width: 4rem !important;">
+                                    <input type="number" id="input-{{ article.id_ski }}" id="input-{{ article.id_ski }}"
+                                           step="1" min="0" max="{{ article.stock_ski }}" class="form-control"
+                                           style="width: 4rem !important;" value="1" name="quantite">
                                 </div>
-                            </div>
-                            <div class="card-footer">
-                            {% if article.stock is defined %}
-                                 {% if article.stock > 0 %}
-                                    <small class="text-muted">Stock restant : {{ article.stock }}</small>
-                                 {% else %}
-                                    <small class="text-muted">article  momentanément indisponible</small>
-                                 {% endif %}
-                            {% endif %}
-                                <br>
-                            {% if article.nb_notes is defined %}
-                            {% if article.nb_notes > 1 %}
-                                 <a  href="/client/article/details/{{ article.id }}">
-                                    <span style="color: #3A7734"> note : {{  "{:,.1f}".format(article.moy_notes) }}</span>
-                                 </a>
-                            {% endif %}
-                            {% endif %}
-                            {% if article.nb_avis is defined %}
-                            {% if article.nb_avis > 0 %}
-                                 <a href="/client/article/details/{{ article.id }}">
-                                    <span style="color: #3A7734">({{ article.nb_avis }} avis)</span>
-                                 </a>
-                            {% endif %}
-                            {% endif %}
-                            </div>
+                            </form>
                         </div>
-                {% endfor %}
+                    </div>
+                    <div class="card-footer">
+                        {% if article.stock_ski is defined %}
+                            {% if article.stock_ski > 0 %}
+                                <small class="text-muted">Stock restant : {{ article.stock_ski }}</small>
+                            {% else %}
+                                <small class="text-muted">article momentanément indisponible</small>
+                            {% endif %}
+                        {% endif %}
+                        <br>
+                        {% if article.nb_notes is defined %}
+                            {% if article.nb_notes > 1 %}
+                                <a href="/client/article/details/{{ article.id_ski }}">
+                                    <span style="color: #3A7734"> note : {{ "{:,.1f}".format(article.moy_notes) }}</span>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                        {% if article.nb_avis is defined %}
+                            {% if article.nb_avis > 0 %}
+                                <a href="/client/article/details/{{ article.id_ski }}">
+                                    <span style="color: #3A7734">({{ article.nb_avis }} avis)</span>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,49 @@
+{% extends "admin/layout_admin.html" %}
+{% block body %}
+    {% block tableau %}
+        <h1>Tableau des utilisateurs</h1>
+        <a class="btn btn-lg btn-primary mt-4" href="/admin/client/gestion/add"> Cliquer ici pour ajouter un
+            utilisateur</a>
+        <br><br>
+
+        <table class="table table-dark table-bordered">
+            <thead>
+            <tr>
+                <th>Pseudo utilisateur | (id)</th>
+                <th>Role</th>
+                <th>Est actif</th>
+                <th>Email</th>
+                <th>Adresse</th>
+                <th>Opération</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if user | length >= 1 %}
+                {% for elt in user %}
+                    <tr>
+                        <td>{{ elt.username_user }} | {{ elt.id_user }}</td>
+                        <td>{{ elt.role_user }}</td>
+                        {% if elt.est_actif_user == 1 %}
+                        <td>OUI</td>
+                        {% else %}
+                        <td>NON</td>
+                        {% endif %}
+                        <td>{{ elt.email_user }}</td>
+                        <td>{{ elt.adresse_user }}</td>
+                        <td class="EANDD">
+                            <a class="edit" href="/admin/client/gestion/edit/{{ elt.id_user }}">Editer</a>
+                            <a class="delete" href="/admin/client/gestion/delete?id={{ elt.id_user }}">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td>
+                        pas d'utilisateur
+                    </td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    {% endblock tableau %}
+{% endblock %}

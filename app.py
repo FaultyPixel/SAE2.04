@@ -4,7 +4,6 @@
 from flask import Flask, request, render_template, redirect, url_for, abort, flash, session, g
 from flask import Blueprint
 
-
 from controllers.auth_security import *
 
 from controllers.client_article import *
@@ -33,6 +32,7 @@ def close_connection(exception):
 def show_accueil():
     return render_template('auth/layout.html')
 
+
 ##################
 # Authentification
 ##################
@@ -41,17 +41,18 @@ def show_accueil():
 
 @app.before_request
 def before_request():
-     if request.path.startswith('/admin') or request.path.startswith('/client'):
-        if 'role_user' not in session:
+    if request.path.startswith('/admin') or request.path.startswith('/client'):
+        if 'role' not in session:
             return redirect('/login')
-            #return redirect(url_for('auth_login'))
+            # return redirect(url_for('auth_login'))
         else:
-            if (request.path.startswith('/client') and session['role_user'] != 'ROLE_client') or (request.path.startswith('/admin') and session['role_user'] != 'ROLE_admin'):
-                print('pb de route : ', session['role_user'], request.path.title(), ' => deconnexion')
+            if (request.path.startswith('/client') and session['role'] != 'ROLE_client') or (
+                    request.path.startswith('/admin') and session['role'] != 'ROLE_admin'):
+                print('pb de route : ', session['role'], request.path.title(), ' => deconnexion')
                 session.pop('username_user', None)
-                session.pop('role_user', None)
+                session.pop('role', None)
                 return redirect('/login')
-                #return redirect(url_for('auth_login'))
+                # return redirect(url_for('auth_login'))
 
 
 app.register_blueprint(auth_security)
@@ -67,7 +68,5 @@ app.register_blueprint(admin_panier)
 app.register_blueprint(admin_type_article)
 app.register_blueprint(admin_dataviz_article)
 
-
 if __name__ == '__main__':
     app.run()
-

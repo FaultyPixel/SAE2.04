@@ -13,7 +13,7 @@ def show_article():
     mycursor = get_db().cursor()
     articles = ''' SELECT * 
                 FROM SKI AS s 
-                LEFT JOIN note n on s.id_ski = n.id_ski'''
+                LEFT JOIN Note n on s.id_ski = n.id_ski'''
     mycursor.execute(articles)
     articles = mycursor.fetchall()
     print(articles)
@@ -25,7 +25,7 @@ def delete_article():
     id_article = request.args.get('id')
     print(id_article)
     tuple_insert = id_article
-    sqlL = '''SELECT * FROM LIGNE AS l
+    sqlL = '''SELECT * FROM Ligne AS l
                 WHERE l.id_ski = %s;'''
     sqlP = '''SELECT * FROM PANIER AS p
                 INNER JOIN USER u on p.id_user = u.id_user
@@ -50,7 +50,7 @@ def delete_article():
         print(ski)
         return render_template('admin/article/delete_article.html', ligne=ligne, panier=panier, commentaire=commentaire, ski=ski)
     else:
-        sql = '''DELETE FROM FOURNI WHERE FOURNI.id_ski = %s;'''
+        sql = '''DELETE FROM Fourni WHERE Fourni.id_ski = %s;'''
         mycursor.execute(sql, tuple_insert)
         get_db().commit()
         sql = '''DELETE FROM SKI WHERE SKI.id_ski = %s;'''
@@ -70,7 +70,7 @@ def delete_article_panier():
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
     tuple_insert = id_article
-    sqlL = '''SELECT * FROM LIGNE AS l
+    sqlL = '''SELECT * FROM Ligne AS l
                     WHERE l.id_ski = %s;'''
     sqlP = '''SELECT * FROM PANIER AS p
                     INNER JOIN USER u on p.id_user = u.id_user
@@ -92,7 +92,7 @@ def delete_article_panier():
         return render_template('admin/article/delete_article.html', ligne=ligne, panier=panier, commentaire=commentaire,
                                ski=ski)
     else:
-        sql = '''DELETE FROM FOURNI WHERE FOURNI.id_ski = %s;'''
+        sql = '''DELETE FROM Fourni WHERE Fourni.id_ski = %s;'''
         mycursor.execute(sql, tuple_insert)
         get_db().commit()
         sql = '''DELETE FROM SKI WHERE SKI.id_ski = %s;'''
@@ -108,11 +108,11 @@ def delete_article_ligne():
     id_commande = request.args.get('id')[-2]
     id_article = request.args.get('id')[-1]
     tuple_insert = id_commande
-    sql = '''DELETE FROM LIGNE WHERE LIGNE.id_commande = %s;'''
+    sql = '''DELETE FROM Ligne WHERE Ligne.id_commande = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
     tuple_insert = id_article
-    sqlL = '''SELECT * FROM LIGNE AS l
+    sqlL = '''SELECT * FROM Ligne AS l
                     WHERE l.id_ski = %s;'''
     sqlP = '''SELECT * FROM PANIER AS p
                     INNER JOIN USER u on p.id_user = u.id_user
@@ -134,7 +134,7 @@ def delete_article_ligne():
         return render_template('admin/article/delete_article.html', ligne=ligne, panier=panier, commentaire=commentaire,
                                ski=ski)
     else:
-        sql = '''DELETE FROM FOURNI WHERE FOURNI.id_ski = %s;'''
+        sql = '''DELETE FROM Fourni WHERE Fourni.id_ski = %s;'''
         mycursor.execute(sql, tuple_insert)
         get_db().commit()
         sql = '''DELETE FROM SKI WHERE SKI.id_ski = %s;'''
@@ -154,7 +154,7 @@ def delete_article_commentaire():
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
     tuple_insert = id_article
-    sqlL = '''SELECT * FROM LIGNE AS l
+    sqlL = '''SELECT * FROM Ligne AS l
                     WHERE l.id_ski = %s;'''
     sqlP = '''SELECT * FROM PANIER AS p
                     INNER JOIN USER u on p.id_user = u.id_user
@@ -176,7 +176,7 @@ def delete_article_commentaire():
         return render_template('admin/article/delete_article.html', ligne=ligne, panier=panier, commentaire=commentaire,
                                ski=ski)
     else:
-        sql = '''DELETE FROM FOURNI WHERE FOURNI.id_ski = %s;'''
+        sql = '''DELETE FROM Fourni WHERE Fourni.id_ski = %s;'''
         mycursor.execute(sql, tuple_insert)
         get_db().commit()
         sql = '''DELETE FROM SKI WHERE SKI.id_ski = %s;'''
@@ -194,13 +194,13 @@ def delete_all():
     sql = '''DELETE FROM COMMENTAIRE WHERE COMMENTAIRE.id_ski = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
-    sql = '''DELETE FROM LIGNE WHERE LIGNE.id_ski = %s;'''
+    sql = '''DELETE FROM Ligne WHERE Ligne.id_ski = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
     sql = '''DELETE FROM PANIER WHERE PANIER.id_ski = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
-    sql = '''DELETE FROM FOURNI WHERE FOURNI.id_ski = %s;'''
+    sql = '''DELETE FROM Fourni WHERE Fourni.id_ski = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
     sql = '''DELETE FROM SKI WHERE SKI.id_ski = %s;'''

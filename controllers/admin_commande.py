@@ -21,7 +21,7 @@ def admin_commande_show():
     commande = '''SELECT * FROM COMMANDE
                 INNER JOIN ETAT e on COMMANDE.id_etat = e.id_etat
                 INNER JOIN USER u on COMMANDE.id_user = u.id_user
-                INNER JOIN LIGNE l on COMMANDE.id_commande = l.id_commande
+                INNER JOIN Ligne l on COMMANDE.id_commande = l.id_commande
                 INNER JOIN SKI s on l.id_ski = s.id_ski'''
     mycursor.execute(commande)
     commande = mycursor.fetchall()

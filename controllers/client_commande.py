@@ -66,9 +66,9 @@ def client_commande_show():
                 GROUP BY COMMANDE.id_commande;'''
     mycursor.execute(sql, session['user_id'])
     commandes = mycursor.fetchall()
-    if commandes[0]["id_commande"] == None:
-        commandes = None
-    print(commandes)
+    #if commandes[0]["id_commande"] == None:
+    #    commandes = None
+    #print(commandes)
 
     sql = ''' SELECT Ligne.id_ski, Ligne.id_commande, prix_unit_ligne AS prix, quantite_ligne AS quantite, prix_unit_ligne*quantite_ligne AS prix_ligne, modele_ski AS nom
             FROM Ligne

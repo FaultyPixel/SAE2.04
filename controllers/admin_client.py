@@ -101,7 +101,7 @@ def delete_client_commande():
     id_commande = request.args.get('id')[-2]
     id_user = request.args.get('id')[-1]
     tuple_insert = id_commande
-    sql = '''DELETE FROM LIGNE WHERE LIGNE.id_commande = %s;'''
+    sql = '''DELETE FROM Ligne WHERE Ligne.id_commande = %s;'''
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
     sql = '''DELETE FROM COMMANDE WHERE COMMANDE.id_commande = %s;'''
@@ -184,7 +184,7 @@ def delete_all():
     ligne = mycursor.fetchall()
     for elt in ligne:
         tuple_insert = elt['id_commande']
-        sql = '''DELETE FROM LIGNE WHERE LIGNE.id_commande = %s;'''
+        sql = '''DELETE FROM Ligne WHERE Ligne.id_commande = %s;'''
         mycursor.execute(sql, tuple_insert)
         get_db().commit()
     tuple_insert = id_user

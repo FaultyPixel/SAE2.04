@@ -100,7 +100,7 @@ def client_panier_filtre():
 
     sql = """SELECT * FROM SKI
                 JOIN FIXATION ON SKI.id_fixation = FIXATION.id_fixation
-                JOIN NIVEAU_SKIEUR ON NIVEAU_SKIEUR.id_niveau_skieur = ski.id_niveau_skieur
+                JOIN NIVEAU_SKIEUR ON NIVEAU_SKIEUR.id_niveau_skieur = SKI.id_niveau_skieur
                 JOIN NOYAU ON SKI.id_noyau = NOYAU.id_noyau
                 JOIN PAYS_FABRICATION pf on SKI.id_pays_fabrication = pf.id_pays_fabrication
                 JOIN POIDS_SKIEUR ps on SKI.id_poids_skieur = ps.id_poids_skieur

@@ -57,13 +57,25 @@ def client_article_details(id):
                JOIN POIDS_SKIEUR ps on SKI.id_poids_skieur = ps.id_poids_skieur
                JOIN SEXE s on SKI.id_sexe = s.id_sexe
                JOIN TYPE_SKI ts on SKI.id_type_ski = ts.id_type_ski
+               JOIN fabricant f2 on ski.id_fabricant = f2.id_fabricant
                WHERE SKI.id_ski = %s;
                """
     mycursor.execute(sql, id)
     article = mycursor.fetchone()
+    print(article)
+
+
     commentaires = None
 
+    sql = """
+    SELECT *
+    FROM COMMANDE
+    JOIN ligne l ON COMMANDE.id_commande = l.id_commande
+    WHERE id_user=%s
+    GROUP BY COMMANDE.id_commande"""
+    mycursor.execute(sql, session["user_id"])
+    commandes_articles = mycursor.fetchall()
 
-    commandes_articles = None
+
     return render_template('client/boutique/article_details.html', article=article, commentaires=commentaires,
                            commandes_articles=commandes_articles)

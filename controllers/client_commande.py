@@ -62,7 +62,8 @@ def client_commande_show():
                 FROM COMMANDE
                 JOIN Ligne ON COMMANDE.id_commande = Ligne.id_commande
                 JOIN ETAT ON COMMANDE.id_etat = ETAT.id_etat
-                WHERE id_user = %s;'''
+                WHERE id_user = %s
+                GROUP BY COMMANDE.id_commande;'''
     mycursor.execute(sql, session['user_id'])
     commandes = mycursor.fetchall()
     if commandes[0]["id_commande"] == None:
